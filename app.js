@@ -13,6 +13,9 @@ var socketList = {};
 
 io.sockets.on('connection', function(socket){
     console.log('socket connection');
+    socket.emit('initializeShip', {
+        msg: 'socket connected, heres the new ship'
+    })
     socket.id = Math.random();
     socketList[socket.id] = socket;
     socket.x = 0;

@@ -14,6 +14,7 @@ function Ship(){
                 height: self.height + 'px'
             }
         });
+        return this.domElem;
     }
 
 }
