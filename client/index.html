@@ -22,17 +22,16 @@
         msg: 'The earth was formless and void, and darkness was over the surface of the deep'
     });
 
-    socket.on('initializeShip', function(data){
-        console.log(data.msg);
+    // init
+    socket.on('initializeShip', function(initPack){
+//        console.log(data.msg);
+        game.makeShip(initPack)
     });
 
-    socket.on('serverMsg', function(data){
-        console.log(data.msg);
-    });
 
 
 
-
+    // update
     socket.on('newPositions', function(data){
         console.log('newPosition received and data is : ', data.length);
         for(var i = 0; i < data.length; i++){
@@ -43,9 +42,11 @@
 //                top: data.y
 //            });
         }
+    });
 
 
-    })
+    // remove
+
 
     game = new GameController(socket);
 

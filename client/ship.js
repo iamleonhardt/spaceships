@@ -1,6 +1,10 @@
-function Ship(){
-    this.x = 0;
-    this.y = 0;
+function Ship(initPack){
+    var self = this;
+    this.id = initPack.id;
+
+    this.x = initPack.x;
+    this.y = initPack.y;
+
     this.domElem = null;
 
     this.createDomElem = function(){
@@ -15,6 +19,6 @@ function Ship(){
             }
         });
         return this.domElem;
-    }
+    };
 
 }

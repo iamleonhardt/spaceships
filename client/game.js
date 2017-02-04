@@ -1,12 +1,13 @@
 
 function GameController(socket){
     this.shipList = {};
+    this.playerList = {};
 
     this.init = function(gameAreaSelector){
         this.gameArea = $(gameAreaSelector);
-    }
+    };
 
-    this.makeShip = function(socket){
+    this.makeShip = function(initPack){
         console.log('putting together new ship');
         var ship = new Ship();
         this.shipObj = ship;
@@ -14,8 +15,11 @@ function GameController(socket){
         var shipDomElem = this.shipObj.createDomElem();
         console.log('shipDomElem is : ', shipDomElem);
         this.gameArea.append(shipDomElem);
-        this.shipList[socket.id] = ship;
+        this.shipList[initPack.id] = ship;
         console.log('shipList is : ', this.shipList);
+
+        game.playerList[this.id] = this;
+        console.log('game.playerList is : ', game.playerList);
     }
 }
 

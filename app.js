@@ -26,11 +26,6 @@ io.sockets.on('connection', function(socket){
         console.log(data.msg);
     });
 
-
-    socket.emit('serverMsg', {
-        msg: 'The stars at night are big and bright..'
-    })
-
 });
 
 
