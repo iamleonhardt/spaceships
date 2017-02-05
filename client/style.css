@@ -1,0 +1,10 @@
+#gameArea {
+    width: 100vw;
+    height: 100vh;
+    background-color: lavender;
+}
+
+
+.ship {
+    position: absolute;
+}
