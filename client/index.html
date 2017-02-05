@@ -7,8 +7,6 @@
 
 <div id="gameArea"></div>
 
-
-
 <script>
     var game;
 
@@ -22,31 +20,68 @@
         msg: 'The earth was formless and void, and darkness was over the surface of the deep'
     });
 
-    // init
+    // Init - When new stuff created, contains all the data
     socket.on('initializeShip', function(initPack){
-//        console.log(data.msg);
-        game.makeShip(initPack)
-    });
+        console.log(initPack.msg);
 
-
-
-
-    // update
-    socket.on('newPositions', function(data){
-        console.log('newPosition received and data is : ', data.length);
-        for(var i = 0; i < data.length; i++){
-//            var ship = new Ship();
-//            console.log('data is ', data);
-//            $(this).css({
-//                left: data.x,
-//                top: data.y
-//            });
+        // Server initPack = { ships: [{id:123, pilotName: 'Dan', x:0, y:0},{id:221, pilotName: 'Stan', x:0, y:0}], bullets: []}
+        for(var i = 0; i < initPack.ships.length; i++){
+            game.makeShip(initPack.ships[i]);
         }
     });
 
 
-    // remove
+    // Update - Contains the difference when things change
+    socket.on('update', function(data){
+        console.log('update triggered and data is : ', data);
 
+//        // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
+//        for(var i = 0; i < data.ships.length; i++){
+//
+//            // Compare sent ships to client shipList
+//            var packShip = data.ships[i];
+//            var s = game.shipList[packShip.id];
+//
+//            // look for de-sync make sure player exists properly
+//            if(s){
+//                if(packShip.x !== undefined){
+//                    s.x = packShip.x;
+//                }
+//                if(packShip.y !== undefined){
+//                    s.y = packShip.y;
+//                }
+//            }
+//        }
+    });
+
+
+    // Remove - When things are removed
+    socket.on('remove'), function(data){
+        // Server will send list of ids to remove, and we loop through and remove them.
+        // {ships: [144, 193], bullets: [18923, 182023, 342]}
+        for(var i = 0; i < data.ships.length; i++){
+            delete shipList[data.player[i]]
+        }
+    };
+
+    function getRanNum(min, max){
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
+
+    setInterval(function(){
+        for(var i in game.shipList){
+            // update position
+            var ship = game.shipList[i];
+            console.log('ship is : ', ship);
+            ship.x += getRanNum(-2, 3);
+            ship.y += getRanNum(-2, 3);
+            ship.domElem.css({
+                left: ship.x + 'px',
+                top: ship.y + 'px'
+            })
+        }
+    }, 40);
 
     game = new GameController(socket);
 

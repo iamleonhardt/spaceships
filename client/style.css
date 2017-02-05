@@ -5,9 +5,6 @@
 }
 
 
-#ship {
-    background-color: blue;
-    width: 40px;
-    height: 40px;
+.ship {
     position: absolute;
 }
