@@ -6,23 +6,11 @@
 <script src="game.js"></script>
 <!-- dan game map code -->
 <script src="map/map.js"></script>
-<script DEFER ASYNC>
-    var map;
-    function mapLoaded(mapElement){
-        console.log('map is loaded');
-        $("#gameArea").append(mapElement);
-    }
-    $(document).ready(function(){
-        map = new GameMap();
-        map.init('map/data/map1.json',mapLoaded);
-    });
-    
-</script>
 <!-- end dan game map code -->
 <div id="gameArea"></div>
 
 <script>
-/*
+
     var game;
 
     $(document).ready(function(){
@@ -108,5 +96,5 @@
     }, 40);
 
     game = new GameController(socket);
-*/
+
 </script>

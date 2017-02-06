@@ -5,7 +5,8 @@ function GameMap(){
 	this.mapData = null;
 	this.domElement = null;
 	this.loadedCallback = null;
-	this.init = function(map, callBack){
+	this.init = function(map, callBack,mapProperties){
+		this.mapProperties = mapProperties;
 		this.loadMap(map, callBack);
 	}
 	this.loadMap = function(map,callBack){
@@ -21,7 +22,7 @@ function GameMap(){
 
 		this.meta = decodedData.meta;
 		this.mapData = decodedData.mapData;
-		this.drawMap();
+		this.drawMap(this.mapProperties);
 		this.loadedCallback(this.domElement);
 	}
 	this.drawMap = function(options){

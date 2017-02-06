@@ -1,8 +1,10 @@
 function GameController(socket){
     this.shipList = {};
+    this.mapController = null;
 
     this.init = function(gameAreaSelector){
         this.gameArea = $(gameAreaSelector);
+        this.instantiateMap(this.handleMapLoad.bind(this));
     };
 
     this.makeShip = function(initPack){
@@ -18,5 +20,16 @@ function GameController(socket){
 
         game.shipList[this.id] = this.shipObj;
         console.log('game.shipList is : ', game.shipList);
+    }
+    this.instantiateMap = function(mapLoadedHandler,options){
+        if(options===undefined){
+            options = {id:'mapArea',class:'map'};
+        }
+        this.mapController = new GameMap();
+        this.mapController.init('map/data/map1.json',mapLoadedHandler,options);
+    }
+    this.handleMapLoad = function(mapElement){
+        console.log('map is loaded');
+        this.gameArea.append(mapElement);
     }
 }
