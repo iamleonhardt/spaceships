@@ -13,7 +13,7 @@ function Ship(initPack){
     this.y = initPack.y;
     this.xTraj = 0;
     this.yTraj = 0;
-    this.speed = 2;
+    this.speed = initPack.speed;
 
 
     this.createDomElem = function(){
