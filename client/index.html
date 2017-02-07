@@ -26,6 +26,10 @@
     // Init - When new stuff created, contains all the data
     socket.on('init', function(initPack){
         console.log('initPack in socket init is : ', initPack);
+        if(game.shipList.undefined){
+            delete game.shipList.undefined;
+            return;
+        }
         for(var i in initPack.ships){
             game.makeShip(initPack.ships[i]);
         }
