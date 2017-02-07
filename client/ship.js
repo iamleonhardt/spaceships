@@ -31,4 +31,9 @@ function Ship(initPack){
         });
         return this.domElem;
     };
+
+    this.shipDie = function(){
+        $(this.domElem).remove();
+
+    }
 }

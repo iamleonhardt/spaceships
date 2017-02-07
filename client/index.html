@@ -26,9 +26,7 @@
     // Init - When new stuff created, contains all the data
     socket.on('init', function(initPack){
         console.log('initPack in socket init is : ', initPack);
-
-        // Server initPack = { ships: [{id:123, pilotName: 'Dan', x:0, y:0},{id:221, pilotName: 'Stan', x:0, y:0}], bullets: []}
-        for(var i = 0; i < initPack.ships.length; i++){
+        for(var i in initPack.ships){
             game.makeShip(initPack.ships[i]);
         }
     });
@@ -36,16 +34,16 @@
 
     // Update - Contains the difference when things change
     socket.on('update', function(data){
-        console.log('update triggered and data is : ', data);
+//        console.log('update triggered and data is : ', data);
 
-//        // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
-        for(var i = 0; i < data.ships.length; i++){
-//
-//            // Compare sent ships to client shipList
+        // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
+        for(var i in data.ships){
+
+            // Compare sent ships to client shipList
             var packShip = data.ships[i];
             var ship = game.shipList[packShip.id];
-//
-//            // look for de-sync make sure player exists properly
+
+            // look for de-sync make sure player exists properly
             if(ship){
                 if(packShip.x !== undefined){
                     ship.x = packShip.x;
@@ -61,20 +59,19 @@
         }
     });
 
-
     // Remove - When things are removed
     socket.on('remove', function(data){
-        console.log('remove data is ', data);
+//        console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
-        // {ships: [144, 193], bullets: [18923, 182023, 342]}
-        for(var i = 0; i < data.ships.length; i++){
-            delete shipList[data.ship[i]]
+        for(var i in data.ships){
+            game.shipList[data.ships[i]].shipDie();
+//            delete game.shipList[data.ships[i]];
 
         }
     });
 
-
     setInterval(function(){
+        console.log('shipList is : ', game.shipList);
         for(var i in game.shipList){
             // update position
             var ship = game.shipList[i];
@@ -83,15 +80,6 @@
                 left: ship.x + 'px',
                 top: ship.y + 'px'
             });
-
-//            var ship = game.shipList[i];
-//            console.log('ship is : ', ship);
-//            ship.x += getRanNum(-2, 3);
-//            ship.y += getRanNum(-2, 3);
-//            ship.domElem.css({
-//                left: ship.x + 'px',
-//                top: ship.y + 'px'
-//            })
         }
     }, 40);
 

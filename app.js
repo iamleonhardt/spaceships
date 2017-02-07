@@ -12,83 +12,101 @@ var socketList = {};
 var shipList = {};
 
 var initPack = {
-    ships:[],
-    bullets:[]
+    ships: [],
+    bullets: []
 };
 
 var removePack = {
-    ships:[],
-    bullets:[]
+    ships: [],
+    bullets: []
 };
 
-//
-// {id:123, pilotName: 'Dan', shipColor: 'red', x:20, y:10},
-// {id:221, pilotName: 'Stan', shipColor: 'blue', x:30, y:55}
-
-function getRanNum(min, max){
+function getRanNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function Ship(socket){
+function Ship(socket) {
     var self = {
-        x:100,
-        y:100,
+        x: 100,
+        y: 100,
         speed: 1,
         id: socket.id,
         shipColor: 'white'
     }
     // Update will contain all things that get updated
-    self.update = function(){
+    self.update = function () {
         console.log('inner update fired');
         self.updatePosition();
     }
     // Updates the position
-    self.updatePosition = function(){
+    self.updatePosition = function () {
         // self.x += self.x * self.speed;
         // self.y += self.y * self.speed;
         self.x += getRanNum(-2, 3);
         self.y += getRanNum(-2, 3);
     }
 
-    shipList[socket.id] = self;
+    // Gets all of the game data to send when a new player joins
+    self.getInitPack = function () {
+        return {
+            id: self.id,
+            x: self.x,
+            y: self.y,
+            shipColor: self.shipColor
+        }
+    }
 
-    initPack.ships.push({
-        id:self.id,
-        x:self.x,
-        y:self.y,
-        shipColor:self.shipColor
-    });
+    // Eventually this should check if theres a difference and only send if theres a difference
+    self.getUpdatePack = function () {
+        return {
+            id: self.id,
+            x: self.x,
+            y: self.y
+        }
+    }
+
+    shipList[socket.id] = self;
+    initPack.ships.push(self.getInitPack());
 
     return self;
 }
 
-Ship.onConnect = function(socket){
+Ship.onConnect = function (socket) {
     var ship = Ship(socket);
+
+    socket.emit('init', {
+        ships: Ship.getAllInitPack(),
+        bullets: {}
+    })
 };
 
-Ship.onDisconnect = function(socket){
+Ship.getAllInitPack = function () {
+    var initShips = [];
+    for (var i in shipList) {
+        initShips.push(shipList[i].getInitPack())
+    }
+    return initShips;
+}
+
+Ship.onDisconnect = function (socket) {
     delete shipList[socket.id];
     removePack.ships.push(socket.id);
 };
 
-Ship.update = function(){
+Ship.update = function () {
     // console.log('outer update fired');
     var updatePack = [];
 
-    for (var i in shipList){
+    for (var i in shipList) {
         var ship = shipList[i];
         ship.updatePosition();
-        updatePack.push({
-            id: ship.id,
-            x:ship.x,
-            y: ship.y
-        });
+        updatePack.push(ship.getUpdatePack());
     }
     return updatePack;
 }
 
 // Socket IO
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', function (socket) {
 
     socket.id = Math.random();
     socketList[socket.id] = socket;
@@ -96,39 +114,22 @@ io.sockets.on('connection', function(socket){
 
     Ship.onConnect(socket);
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         delete socketList[socket.id];
         Ship.onDisconnect(socket);
     })
-    // socket.emit('initializeShip', {
-    //     msg: 'socket connected, passing pack of all ships',
-    //     ships: [
-    //         {id:123, pilotName: 'Dan', shipColor: 'red', x:20, y:10},
-    //         {id:221, pilotName: 'Stan', shipColor: 'blue', x:30, y:55}
-    //         ],
-    //     bullets: []
-    // });
-
-    // socket.x = 0;
-    // socket.y = 0;
-
-    // socket.emit('update', {
-    //     ships: [
-    //         {id:123, pilotName: 'Dan', shipColor: 'red', x:55, y:210},
-    //         {id:221, pilotName: 'Stan', shipColor: 'blue', x:205, y:610}
-    //     ],
-    //     bullets: []
-    // });
 
 });
 
-setInterval(function(){
+setInterval(function () {
     var updatePack = {
         ships: Ship.update()
         // bullets: Bullet.update()
     };
+console.log(Object.keys(shipList));
 
-    for (var i in socketList){
+
+    for (var i in socketList) {
         var socket = socketList[i];
         socket.emit('init', initPack);
         socket.emit('update', updatePack);
