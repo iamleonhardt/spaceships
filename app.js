@@ -13,12 +13,12 @@ var shipList = {};
 
 var initPack = {
     ships: [],
-    bullets: []
+    bullets: {}
 };
 
 var removePack = {
     ships: [],
-    bullets: []
+    bullets: {}
 };
 
 function getRanNum(min, max) {
@@ -126,9 +126,8 @@ setInterval(function () {
         ships: Ship.update()
         // bullets: Bullet.update()
     };
-console.log(Object.keys(shipList));
-
-
+    console.log(Object.keys(shipList));
+    
     for (var i in socketList) {
         var socket = socketList[i];
         socket.emit('init', initPack);
