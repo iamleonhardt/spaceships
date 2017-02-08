@@ -14,7 +14,7 @@ function GameController(socket){
         var shipDomElem = this.shipObj.createDomElem();
         this.gameArea.append(shipDomElem);
         this.shipList[initPack.id] = ship;
-        // game.shipList[this.id] = this.shipObj;
+        // game.shipList[initPack.id] = this.shipObj;
     }
     this.instantiateMap = function(mapLoadedHandler,options){
         if(options===undefined){
