@@ -25,7 +25,7 @@
 
     // Init - When new stuff created, contains all the data
     socket.on('init', function(initPack){
-        console.log('initPack in socket init is : ', initPack);
+        // console.log('initPack in socket init is : ', initPack);
         
         for(var i in initPack.ships){
 //            game.shipList[initPack.ships[i].id].shipDie();
@@ -65,7 +65,9 @@
 
     // Remove - When things are removed
     socket.on('remove', function(data){
-        console.log('remove data is ', data);
+        if(data.ships[0]){
+            console.log('remove data is ', data.ships);
+        }
         // Server will send list of ids to remove, and we loop through and remove them.
         for(var i in data.ships){
             game.shipList[data.ships[i]].shipDie();
@@ -75,7 +77,7 @@
     });
 
     setInterval(function(){
-        console.log('shipList is : ', game.shipList);
+        // console.log('shipList is : ', game.shipList);
         for(var i in game.shipList){
             // update position
             var ship = game.shipList[i];

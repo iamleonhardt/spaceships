@@ -135,13 +135,14 @@ setInterval(function () {
         // bullets: Bullet.update()
     };
 
-// console.log(Object.keys(shipList));
+console.log(Object.keys(shipList));
 
     for (var i in socketList) {
         var socket = socketList[i];
-        socket.volatile.emit('init', initPack);
-        socket.emit('update', updatePack);
         socket.emit('remove', removePack);
+        socket.emit('init', initPack);
+        socket.emit('update', updatePack);
+        
     }
     initPack.ships = [];
     removePack.ships = [];
