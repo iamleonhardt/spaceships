@@ -12,13 +12,13 @@ var socketList = {};
 var shipList = {};
 
 var initPack = {
-    ships: [],
-    bullets: []
+    ships: {},
+    bullets: {}
 };
 
 var removePack = {
-    ships: [],
-    bullets: []
+    ships: {},
+    bullets: {}
 };
 
 function getRanNum(min, max) {
@@ -74,10 +74,15 @@ function Ship(socket) {
 Ship.onConnect = function (socket) {
     var ship = Ship(socket);
 
-    socket.emit('init', {
+    initPack = {
         ships: Ship.getAllInitPack(),
         bullets: {}
-    })
+    }
+
+    // socket.emit('init', {
+    //     ships: Ship.getAllInitPack(),
+    //     bullets: {}
+    // })
 };
 
 Ship.getAllInitPack = function () {
@@ -85,6 +90,7 @@ Ship.getAllInitPack = function () {
     for (var i in shipList) {
         initShips.push(shipList[i].getInitPack())
     }
+    console.log('initShips is : ', initShips);
     return initShips;
 }
 
@@ -110,7 +116,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.id = Math.random();
     socketList[socket.id] = socket;
-    console.log('socket connected and socket.id is : ', socket.id);
+    // console.log('socket connected and socket.id is : ', socket.id);
 
     Ship.onConnect(socket);
 
@@ -121,12 +127,14 @@ io.sockets.on('connection', function (socket) {
 
 });
 
+
+// Heartbeat - currently 25 fps
 setInterval(function () {
     var updatePack = {
         ships: Ship.update()
         // bullets: Bullet.update()
     };
-console.log(Object.keys(shipList));
+// console.log(Object.keys(shipList));
 
 
     for (var i in socketList) {

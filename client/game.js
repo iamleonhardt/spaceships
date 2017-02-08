@@ -8,13 +8,13 @@ function GameController(socket){
     };
 
     this.makeShip = function(initPack){
-        console.log('putting together new ship');
+        // console.log('putting together new ship');
         var ship = new Ship(initPack);
         this.shipObj = ship;
         var shipDomElem = this.shipObj.createDomElem();
         this.gameArea.append(shipDomElem);
         this.shipList[initPack.id] = ship;
-        game.shipList[this.id] = this.shipObj;
+        // game.shipList[this.id] = this.shipObj;
     }
     this.instantiateMap = function(mapLoadedHandler,options){
         if(options===undefined){
