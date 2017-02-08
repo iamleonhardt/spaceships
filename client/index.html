@@ -13,68 +13,63 @@
 
     var game;
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         game.init('#gameArea');
     });
 
-    function getRanNum(min, max){
+    function getRanNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
     var socket = io();
 
     // Init - When new stuff created, contains all the data
-    socket.on('init', function(initPack){
-        var shipExists = false;
-//        console.log('initPack in socket init is : ', initPack);
-//        console.log('game.shipList is : ', game.shipList);
-        if ($.isEmptyObject(game.shipList)){
-            for(var i in initPack.ships) {
-                console.log('putting together new ship');
-                game.makeShip(initPack.ships[i]);
-            }
-        }else {
-            var objKeys = Object.keys(game.shipList);
-            for(var i in initPack.ships) {
-                console.log('initPack.ships is : ', initPack.ships);
-                for (var j in objKeys) {
-                    if (initPack.ships[i].id == objKeys[j]) {
-                        console.log('initPack.ships[i].id is : ', initPack.ships[i].id, ' and objKeys[j] is : ', objKeys[j]);
-                        console.log('the ids match')
-                        shipExists = true;
-                    } else {
-                        console.log('initPack.ships[i].id is : ', initPack.ships[i].id, ' and objKeys[j] is : ', objKeys[j]);
-                        console.log('the ids do not match');
-                    }
-                }if (!shipExists) {
-                    console.log('no matches found, lets build a ship');
+    socket.on('init', function (initPack) {
+            var shipExists = false;
+
+            // Check if shipList is empty, if so fill it with ships
+            if ($.isEmptyObject(game.shipList)) {
+                for (var i in initPack.ships) {
+                    console.log('putting together new ship');
                     game.makeShip(initPack.ships[i]);
                 }
-                shipExists = false;
+                // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
             }
-
+            else {
+                var objKeys = Object.keys(game.shipList);
+                for (var i in initPack.ships) {
+                    for (var j in objKeys) {
+                        if (initPack.ships[i].id == objKeys[j]) {
+                            shipExists = true;
+                        }
+                    }
+                    if (!shipExists) {
+                        console.log('no matches found, lets build a ship');
+                        game.makeShip(initPack.ships[i]);
+                    }
+                    shipExists = false;
+                }
+            }
         }
-
-    });
-
+    )
 
     // Update - Contains the difference when things change
-    socket.on('update', function(data){
+    socket.on('update', function (data) {
 //        console.log('update triggered and data is : ', data);
 
         // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
-        for(var i in data.ships){
+        for (var i in data.ships) {
 
             // Compare sent ships to client shipList
             var packShip = data.ships[i];
             var ship = game.shipList[packShip.id];
 
             // look for de-sync make sure player exists properly
-            if(ship){
-                if(packShip.x !== undefined){
+            if (ship) {
+                if (packShip.x !== undefined) {
                     ship.x = packShip.x;
                 }
-                if(packShip.y !== undefined){
+                if (packShip.y !== undefined) {
                     ship.y = packShip.y;
                 }
                 ship.domElem.css({
@@ -86,10 +81,10 @@
     });
 
     // Remove - When things are removed
-    socket.on('remove', function(data){
+    socket.on('remove', function (data) {
 //        console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
-        for(var i in data.ships){
+        for (var i in data.ships) {
             game.shipList[data.ships[i]].shipDie();
             delete game.shipList[data.ships[i]];
             console.log('after delete game.shiplist is : ', game.shipList);
@@ -97,9 +92,9 @@
         }
     });
 
-    setInterval(function(){
+    setInterval(function () {
 //        console.log('shipList is : ', game.shipList);
-        for(var i in game.shipList){
+        for (var i in game.shipList) {
             // update position
             var ship = game.shipList[i];
 //            console.log('ship is : ', ship);
