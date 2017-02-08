@@ -15,7 +15,6 @@ function Ship(initPack){
     this.yTraj = 0;
     this.speed = initPack.speed;
 
-
     this.createDomElem = function(){
         this.domElem = $('<div>', {
             id: this.id,

@@ -27,9 +27,9 @@ function getRanNum(min, max) {
 
 function Ship(socket) {
     var self = {
-        x: 100,
-        y: 100,
-        speed: 1,
+        x: getRanNum(100, 500),
+        y: getRanNum(100, 500),
+        speed: 5,
         id: socket.id,
         shipColor: 'white'
     }
@@ -39,11 +39,25 @@ function Ship(socket) {
         self.updatePosition();
     }
     // Updates the position
-    self.updatePosition = function () {
+    self.updatePosition = function (data) {
+        if(data){
+            if(data['key'] === 'w'){
+                self.y -= self.speed;
+            }
+            else if(data['key'] === 's'){
+                self.y += self.speed;
+            }
+            else if(data['key'] === 'a'){
+                self.x -= self.speed;
+            }
+            else if(data['key'] === 'd'){
+                self.x += self.speed;
+            }
+        }
         // self.x += self.x * self.speed;
         // self.y += self.y * self.speed;
-        self.x += getRanNum(-2, 3);
-        self.y += getRanNum(-2, 3);
+        // self.x += getRanNum(-2, 3);
+        // self.y += getRanNum(-2, 3);
     }
 
     // Gets all of the game data to send when a new player joins
@@ -79,10 +93,6 @@ Ship.onConnect = function (socket) {
         bullets: {}
     }
 
-    // socket.emit('init', {
-    //     ships: Ship.getAllInitPack(),
-    //     bullets: {}
-    // })
 };
 
 Ship.getAllInitPack = function () {
@@ -99,13 +109,16 @@ Ship.onDisconnect = function (socket) {
     removePack.ships.push(socket.id);
 };
 
-Ship.update = function () {
+Ship.update = function (id, data) {
     // console.log('outer update fired');
     var updatePack = [];
 
     for (var i in shipList) {
         var ship = shipList[i];
-        ship.updatePosition();
+
+        if(id && data){
+            shipList[id].updatePosition(data)
+        }
         updatePack.push(ship.getUpdatePack());
     }
     return updatePack;
@@ -119,6 +132,10 @@ io.sockets.on('connection', function (socket) {
     // console.log('socket connected and socket.id is : ', socket.id);
 
     Ship.onConnect(socket);
+
+    socket.on('moveShip', function(data){
+       Ship.update(socket.id, data)
+    })
 
     socket.on('disconnect', function () {
         delete socketList[socket.id];
@@ -135,7 +152,7 @@ setInterval(function () {
         // bullets: Bullet.update()
     };
 
-console.log(Object.keys(shipList));
+// console.log(Object.keys(shipList));
 
     for (var i in socketList) {
         var socket = socketList[i];

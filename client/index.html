@@ -82,15 +82,9 @@
     });
 
     // Remove - When things are removed
-<<<<<<< HEAD
-    socket.on('remove', function(data){
-        if(data.ships[0]){
-            console.log('remove data is ', data.ships);
-        }
-=======
+
     socket.on('remove', function (data) {
-//        console.log('remove data is ', data);
->>>>>>> aed44416509604dc8fb26511f30bbd62dd6690a4
+        // console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
         for (var i in data.ships) {
             game.shipList[data.ships[i]].shipDie();
@@ -115,5 +109,12 @@
     }, 40);
 
     game = new GameController(socket);
+
+    document.addEventListener('keydown', function(e){
+            if (e.key === 'w' || e.key === 's' || e.key === 'a' || e.key === 'd'){
+                socket.emit('moveShip', {key:e.key});
+            }
+            
+        })
 
 </script>
