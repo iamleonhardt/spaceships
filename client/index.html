@@ -110,11 +110,51 @@
 
     game = new GameController(socket);
 
+    var movementKeymap = ['w','s','a','d'];
+    var keyStates = {};
+
     document.addEventListener('keydown', function(e){
-            if (e.key === 'w' || e.key === 's' || e.key === 'a' || e.key === 'd'){
-                socket.emit('moveShip', {key:e.key});
+            if (movementKeymap.indexOf(e.key) >= 0){
+                keyStates[e.key] = true;
+                keyLoop(e);
             }
-            
-        })
+        }, false);
+    document.addEventListener('keyup', function(e){
+            if (movementKeymap.indexOf(e.key) >= 0){
+                keyStates[e.key] = false;
+                keyLoop(e);
+            }
+        }, false);
+
+    function keyLoop(e){
+        if(keyStates['w'] && keyStates['d']){
+            socket.emit('moveShip', {key:'wd'});
+            // console.log(e.key);
+        }
+        else if(keyStates['w'] && keyStates['a']){
+            socket.emit('moveShip', {key:'wa'});
+            // console.log(e.key);
+        }
+        else if(keyStates['s'] && keyStates['a']){
+            socket.emit('moveShip', {key:'sa'});
+            // console.log(e.key);
+        }
+        else if(keyStates['s'] && keyStates['d']){
+            socket.emit('moveShip', {key:'sd'});
+        }
+        else{
+            socket.emit('moveShip', {key:e.key});
+        }
+       
+    }
+    
+
+    // document.addEventListener('keyup', function(e){
+    //     if (e.key === 'w' || e.key === 's' || e.key === 'a' || e.key === 'd'){
+    //         console.log(e.key);
+    //         socket.emit('moveShip', {key:e.key});
+    //     }
+        
+    // })
 
 </script>

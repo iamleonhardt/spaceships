@@ -29,7 +29,7 @@ function Ship(socket) {
     var self = {
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
-        speed: 5,
+        speed: 10,
         id: socket.id,
         shipColor: 'white'
     }
@@ -41,7 +41,23 @@ function Ship(socket) {
     // Updates the position
     self.updatePosition = function (data) {
         if(data){
-            if(data['key'] === 'w'){
+            if(data['key'] === 'wd'){
+                self.y -= self.speed;
+                self.x += self.speed;
+            }
+            else if(data['key'] === 'wa'){
+                self.y -= self.speed;
+                self.x -= self.speed;
+            }
+            else if(data['key'] === 'sa'){
+                self.y += self.speed;
+                self.x -= self.speed;
+            }
+            else if(data['key'] === 'sd'){
+                self.y += self.speed;
+                self.x += self.speed;
+            }
+            else if(data['key'] === 'w'){
                 self.y -= self.speed;
             }
             else if(data['key'] === 's'){
