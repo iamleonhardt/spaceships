@@ -28,6 +28,9 @@
         console.log('initPack in socket init is : ', initPack);
         
         for(var i in initPack.ships){
+//            game.shipList[initPack.ships[i].id].shipDie();
+
+            console.log('putting together new ship');
             game.makeShip(initPack.ships[i]);
         }
     });
@@ -62,11 +65,11 @@
 
     // Remove - When things are removed
     socket.on('remove', function(data){
-//        console.log('remove data is ', data);
+        console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
         for(var i in data.ships){
             game.shipList[data.ships[i]].shipDie();
-//            delete game.shipList[data.ships[i]];
+            delete game.shipList[data.ships[i]];
 
         }
     });

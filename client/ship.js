@@ -33,6 +33,7 @@ function Ship(initPack){
     };
 
     this.shipDie = function(){
+        console.log('destroying ship... kapow');
         $(this.domElem).remove();
 
     }
