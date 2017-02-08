@@ -130,7 +130,7 @@ setInterval(function () {
     
     for (var i in socketList) {
         var socket = socketList[i];
-        socket.emit('init', initPack);
+        socket.volatile.emit('init', initPack);
         socket.emit('update', updatePack);
         socket.emit('remove', removePack);
     }
