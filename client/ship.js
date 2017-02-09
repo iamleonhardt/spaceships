@@ -23,7 +23,7 @@ function Ship(initPack){
             css: {
                 left: self.x,
                 top: self.y,
-                transition: 0.1+'s',
+                'transition-duration': 0.1+'s',
                 // 'background-color': initPack.shipColor,
                 // width: self.width + 'px',
                 // height: self.height + 'px',

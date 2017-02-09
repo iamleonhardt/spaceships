@@ -35,7 +35,7 @@ function Ship(socket) {
         rotationSpeed: 15,
         id: socket.id,
         shipColor: 'white',
-        maxSpeed: 10
+        maxSpeed: 20
     }
     
     // Update will contain all things that get updated
@@ -46,7 +46,7 @@ function Ship(socket) {
     
     // Updates the position
     self.updatePosition = function (data) {
-        var filtered;
+        var filtered = [];
         if(data){
             //when theres data it filters the keys that are true then applies the correct movement
             var keys = Object.keys(data);
@@ -103,6 +103,7 @@ function Ship(socket) {
 	self.get_radians = function(degrees){
 		return (Math.PI/180) * degrees;
 	}
+    //this get speed function needs a little redoing
     self.get_speed = function(){
         return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed; 
     }
@@ -111,8 +112,6 @@ function Ship(socket) {
         var speed = self.get_speed();
 		var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
 		var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
-        console.log(delta_x);
-        console.log(delta_y);
         self.x += delta_x;
         self.y += delta_y;	
 	}
@@ -170,13 +169,15 @@ Ship.onDisconnect = function (socket) {
 Ship.update = function (id, data) {
     // console.log('outer update fired');
     var updatePack = [];
-
+    
     for (var i in shipList) {
         var ship = shipList[i];
-        
         //when update contains the id and keydata, it updatesPosition for that specific ship
-        if(id && data){
+        if(id && data && ship == shipList[id]){
+            console.log('moving');
             shipList[id].updatePosition(data);
+        }else{
+            ship.updatePosition();
         }
         updatePack.push(ship.getUpdatePack());
     }
@@ -224,4 +225,4 @@ setInterval(function () {
     initPack.ships = [];
     removePack.ships = [];
 
-}, 20);
+}, 40);
