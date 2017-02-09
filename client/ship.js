@@ -15,6 +15,29 @@ function Ship(initPack){
     this.yTraj = 0;
     this.speed = initPack.speed;
     this.rotation = 0;
+    this.acceleration = 1;
+    this.rotationSpeed = 15;
+    this.maxSpeed = 20;
+
+    this.tempX = self.x;
+    this.tempY = self.y;
+
+    //i used some of dans crazy movement ideas
+	this.get_radians = function(degrees){
+		return (Math.PI/180) * degrees;
+	}
+    //this get speed function needs a little redoing
+    this.get_speed = function(){
+        return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed; 
+    }
+	this.move_ship = function(){
+		var temp_angle = self.rotation + 270;
+        var speed = self.get_speed();
+		var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
+		var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
+        self.tempX += delta_x;
+        self.tempY += delta_y;	
+	}
 
     this.createDomElem = function(){
         this.domElem = $('<div>', {

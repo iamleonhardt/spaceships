@@ -27,4 +27,46 @@ function GameController(socket){
         console.log('map is loaded');
         this.gameArea.append(mapElement);
     }
+    this.handle_keypress = function (e) {
+        console.log('key press', this);
+        switch (e.which) {
+            case 119: //thrust pressed
+                console.log('thrust pressed');
+                // _this.player_mobile.thrust();
+                break;
+            case 100: //turn right
+                console.log('turn right pressed');
+                //event "this" redeclaration workaround #1
+                //_this.player_mobile.turn();
+                //event "this" redeclaration workaround #2, see //REDEC WORKAROUND #2 for more details
+                // _this.player_mobile.turn(1);
+
+                break;
+            case 115: //brake pressed, not currently used
+                console.log('brake pressed');
+                break;
+            case 97: //turn left pressed
+                console.log('turn left pressed');
+                // _this.player_mobile.turn(-1);
+                break;
+            default:
+                console.log('something else pressed');
+                break;
+
+        }
+    }
+    this.handle_keyup = function (e) {
+        switch (e.which) {
+            case 87: //thrust pressed
+                console.log('thrust keyup');
+                // this.player_mobile.stop_thrust();
+                break;
+            case 65:
+            case 68:
+                console.log('turn keyup');
+                // this.player_mobile.stop_turn();
+            default:
+                console.log('something else keyup' + e.which);
+        }
+    }
 }
