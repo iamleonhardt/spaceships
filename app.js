@@ -31,6 +31,7 @@ function Ship(socket) {
         y: getRanNum(100, 500),
         speed: 1,
         acceleration: 1,
+        rotation: 0 ,
         id: socket.id,
         shipColor: 'white'
     }
