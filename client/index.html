@@ -73,9 +73,13 @@
                 if (packShip.y !== undefined) {
                     ship.y = packShip.y;
                 }
+                if (packShip.rotation !== undefined) {
+                    ship.rotation = packShip.rotation;
+                }
                 ship.domElem.css({
                     left: ship.x + 'px',
-                    top: ship.y + 'px'
+                    top: ship.y + 'px',
+                    'transform' : 'rotateZ('+ship.rotation+'deg)'
                 });
             }
         }
@@ -96,11 +100,11 @@
 
 
     setInterval(function () {
-//        console.log('shipList is : ', game.shipList);
+    //    console.log('shipList is : ', game.shipList);
         for (var i in game.shipList) {
             // update position
             var ship = game.shipList[i];
-//            console.log('ship is : ', ship);
+        //    console.log('ship is : ', ship);
             ship.domElem.css({
                 left: ship.x + 'px',
                 top: ship.y + 'px'
