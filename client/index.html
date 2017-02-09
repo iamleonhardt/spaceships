@@ -110,51 +110,27 @@
 
     game = new GameController(socket);
 
-    var movementKeymap = ['w','s','a','d'];
-    var keyStates = {};
+    //keystates to control the directions
+    var keyStates = { w:false, s:false, a:false, d:false };
 
-    document.addEventListener('keydown', function(e){
-            if (movementKeymap.indexOf(e.key) >= 0){
-                keyStates[e.key] = true;
-                keyLoop(e);
-            }
-        }, false);
-    document.addEventListener('keyup', function(e){
-            if (movementKeymap.indexOf(e.key) >= 0){
-                keyStates[e.key] = false;
-                keyLoop(e);
-            }
-        }, false);
-
-    function keyLoop(e){
-        if(keyStates['w'] && keyStates['d']){
-            socket.emit('moveShip', {key:'wd'});
-            // console.log(e.key);
-        }
-        else if(keyStates['w'] && keyStates['a']){
-            socket.emit('moveShip', {key:'wa'});
-            // console.log(e.key);
-        }
-        else if(keyStates['s'] && keyStates['a']){
-            socket.emit('moveShip', {key:'sa'});
-            // console.log(e.key);
-        }
-        else if(keyStates['s'] && keyStates['d']){
-            socket.emit('moveShip', {key:'sd'});
-        }
-        else{
-            socket.emit('moveShip', {key:e.key});
-        }
-       
+    //moveShip function to emit the moveShip event to the server
+    function moveShip(data){
+        socket.emit('moveShip', data);
     }
-    
 
-    // document.addEventListener('keyup', function(e){
-    //     if (e.key === 'w' || e.key === 's' || e.key === 'a' || e.key === 'd'){
-    //         console.log(e.key);
-    //         socket.emit('moveShip', {key:e.key});
-    //     }
-        
-    // })
+    //key event listeners to figure out which directional keys are being pressed
+    //i tried to rewrite this in jquery but it wasnt capturing the diagonal movement
+    document.addEventListener('keydown', function(e){
+            if (Object.keys(keyStates).indexOf(e.key) >= 0){
+                keyStates[e.key] = true;
+                moveShip(keyStates);
+            }
+        });
+    document.addEventListener('keyup', function(e){
+            if (Object.keys(keyStates).indexOf(e.key) >= 0){
+                keyStates[e.key] = false;
+                moveShip(keyStates);
+            }
+        });
 
 </script>

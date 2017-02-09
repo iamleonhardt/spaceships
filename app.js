@@ -29,7 +29,8 @@ function Ship(socket) {
     var self = {
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
-        speed: 10,
+        speed: 1,
+        acceleration: 1,
         id: socket.id,
         shipColor: 'white'
     }
@@ -38,43 +39,56 @@ function Ship(socket) {
         console.log('inner update fired');
         self.updatePosition();
     }
+    
     // Updates the position
     self.updatePosition = function (data) {
+        var filtered;
         if(data){
-            if(data['key'] === 'wd'){
-                self.y -= self.speed;
-                self.x += self.speed;
-            }
-            else if(data['key'] === 'wa'){
-                self.y -= self.speed;
-                self.x -= self.speed;
-            }
-            else if(data['key'] === 'sa'){
-                self.y += self.speed;
-                self.x -= self.speed;
-            }
-            else if(data['key'] === 'sd'){
-                self.y += self.speed;
-                self.x += self.speed;
-            }
-            else if(data['key'] === 'w'){
-                self.y -= self.speed;
-            }
-            else if(data['key'] === 's'){
-                self.y += self.speed;
-            }
-            else if(data['key'] === 'a'){
-                self.x -= self.speed;
-            }
-            else if(data['key'] === 'd'){
-                self.x += self.speed;
+            //when theres data it filters the keys that are true then applies the correct movement
+            var keys = Object.keys(data);
+            filtered = keys.filter(function(key) {
+                return data[key];
+            });
+        }
+            filtered = filtered.join('');
+            console.log(filtered);
+
+            //this switch is kind of fat any ideas on a better way around this?
+            switch(filtered){
+                case 'wd':
+                    self.y -= self.speed + ++self.acceleration;
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                case 'wa':
+                    self.y -= self.speed + ++self.acceleration;
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'sa':
+                    self.y += self.speed + ++self.acceleration;
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'sd':
+                    self.y += self.speed + ++self.acceleration;
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                case 'w':
+                    self.y -= self.speed + ++self.acceleration;
+                    break;
+                case 's':
+                    self.y += self.speed + ++self.acceleration;
+                    break;
+                case 'a':
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'd':
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                default:
+                    self.acceleration = 1;
+                    break;
             }
         }
-        // self.x += self.x * self.speed;
-        // self.y += self.y * self.speed;
-        // self.x += getRanNum(-2, 3);
-        // self.y += getRanNum(-2, 3);
-    }
+    
 
     // Gets all of the game data to send when a new player joins
     self.getInitPack = function () {
@@ -131,9 +145,10 @@ Ship.update = function (id, data) {
 
     for (var i in shipList) {
         var ship = shipList[i];
-
+        
+        //when update contains the id and keydata, it updatesPosition for that specific ship
         if(id && data){
-            shipList[id].updatePosition(data)
+            shipList[id].updatePosition(data);
         }
         updatePack.push(ship.getUpdatePack());
     }
@@ -149,6 +164,7 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
+    // move ship event uses the Ship.update method
     socket.on('moveShip', function(data){
        Ship.update(socket.id, data)
     })
