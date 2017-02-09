@@ -14,7 +14,7 @@ function Ship(initPack){
     this.xTraj = 0;
     this.yTraj = 0;
     this.speed = initPack.speed;
-
+    this.rotation = 0;
 
     this.createDomElem = function(){
         this.domElem = $('<div>', {
@@ -23,9 +23,9 @@ function Ship(initPack){
             css: {
                 left: self.x,
                 top: self.y,
-                'background-color': initPack.shipColor,
-                width: self.width + 'px',
-                height: self.height + 'px',
+                // 'background-color': initPack.shipColor,
+                // width: self.width + 'px',
+                // height: self.height + 'px',
                 text: this.pilotName
             }
         });

@@ -27,9 +27,11 @@ function getRanNum(min, max) {
 
 function Ship(socket) {
     var self = {
-        x: 100,
-        y: 100,
+        x: getRanNum(100, 500),
+        y: getRanNum(100, 500),
         speed: 1,
+        acceleration: 1,
+        rotation: 0 ,
         id: socket.id,
         shipColor: 'white'
     }
@@ -38,13 +40,56 @@ function Ship(socket) {
         console.log('inner update fired');
         self.updatePosition();
     }
+    
     // Updates the position
-    self.updatePosition = function () {
-        // self.x += self.x * self.speed;
-        // self.y += self.y * self.speed;
-        self.x += getRanNum(-2, 3);
-        self.y += getRanNum(-2, 3);
-    }
+    self.updatePosition = function (data) {
+        var filtered;
+        if(data){
+            //when theres data it filters the keys that are true then applies the correct movement
+            var keys = Object.keys(data);
+            filtered = keys.filter(function(key) {
+                return data[key];
+            });
+        }
+            filtered = filtered.join('');
+            console.log(filtered);
+
+            //this switch is kind of fat any ideas on a better way around this?
+            switch(filtered){
+                case 'wd':
+                    self.y -= self.speed + ++self.acceleration;
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                case 'wa':
+                    self.y -= self.speed + ++self.acceleration;
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'sa':
+                    self.y += self.speed + ++self.acceleration;
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'sd':
+                    self.y += self.speed + ++self.acceleration;
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                case 'w':
+                    self.y -= self.speed + ++self.acceleration;
+                    break;
+                case 's':
+                    self.y += self.speed + ++self.acceleration;
+                    break;
+                case 'a':
+                    self.x -= self.speed + ++self.acceleration;
+                    break;
+                case 'd':
+                    self.x += self.speed + ++self.acceleration;
+                    break;
+                default:
+                    self.acceleration = 1;
+                    break;
+            }
+        }
+    
 
     // Gets all of the game data to send when a new player joins
     self.getInitPack = function () {
@@ -79,10 +124,6 @@ Ship.onConnect = function (socket) {
         bullets: {}
     }
 
-    // socket.emit('init', {
-    //     ships: Ship.getAllInitPack(),
-    //     bullets: {}
-    // })
 };
 
 Ship.getAllInitPack = function () {
@@ -99,13 +140,17 @@ Ship.onDisconnect = function (socket) {
     removePack.ships.push(socket.id);
 };
 
-Ship.update = function () {
+Ship.update = function (id, data) {
     // console.log('outer update fired');
     var updatePack = [];
 
     for (var i in shipList) {
         var ship = shipList[i];
-        ship.updatePosition();
+        
+        //when update contains the id and keydata, it updatesPosition for that specific ship
+        if(id && data){
+            shipList[id].updatePosition(data);
+        }
         updatePack.push(ship.getUpdatePack());
     }
     return updatePack;
@@ -119,6 +164,11 @@ io.sockets.on('connection', function (socket) {
     // console.log('socket connected and socket.id is : ', socket.id);
 
     Ship.onConnect(socket);
+
+    // move ship event uses the Ship.update method
+    socket.on('moveShip', function(data){
+       Ship.update(socket.id, data)
+    })
 
     socket.on('disconnect', function () {
         delete socketList[socket.id];
@@ -134,14 +184,15 @@ setInterval(function () {
         ships: Ship.update()
         // bullets: Bullet.update()
     };
-// console.log(Object.keys(shipList));
 
+// console.log(Object.keys(shipList));
 
     for (var i in socketList) {
         var socket = socketList[i];
+        socket.emit('remove', removePack);
         socket.emit('init', initPack);
         socket.emit('update', updatePack);
-        socket.emit('remove', removePack);
+        
     }
     initPack.ships = [];
     removePack.ships = [];
