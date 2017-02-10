@@ -29,7 +29,7 @@ function GameController(socket){
         this.gameArea.append(mapElement);
     }
     this.handle_keypress = function (e) {
-        console.log(selfId);
+        // console.log(selfId);
         switch (e.which) {
             case 119: //thrust pressed
                 console.log('thrust pressed');
@@ -50,7 +50,7 @@ function GameController(socket){
                 break;
             case 97: //turn left pressed
                 console.log('turn left pressed');
-                self.shipList[selfId].rotateRight();
+                self.shipList[selfId].rotateLeft();
                 // _this.player_mobile.turn(-1);
                 break;
             default:

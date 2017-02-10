@@ -237,4 +237,4 @@ setInterval(function () {
     initPack.ships = [];
     removePack.ships = [];
 
-}, 40);
+}, 20);

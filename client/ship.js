@@ -43,12 +43,12 @@ function Ship(initPack){
 	}
 
     this.rotateRight = function(){
-        self.tempRot -= self.rotationSpeed;
+        self.tempRot += self.rotationSpeed;
         socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});
     }
 
-    this.rotateRight = function(){
-        self.tempRot += self.rotationSpeed;
+    this.rotateLeft = function(){
+        self.tempRot -= self.rotationSpeed;
         socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});
     }
 

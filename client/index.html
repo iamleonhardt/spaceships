@@ -75,6 +75,7 @@
                 }
                 if (packShip.rotation !== undefined) {
                     ship.rotation = packShip.rotation;
+                    // ship.tempRot = ship.rotation;
                 }
                 ship.domElem.css({
                     left: ship.x + 'px',
@@ -107,10 +108,11 @@
             //    console.log('ship is : ', ship);
             ship.domElem.css({
                 left: ship.x + 'px',
-                top: ship.y + 'px'
+                top: ship.y + 'px',
+                'transform': 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
-    }, 40);
+    }, 20);
 
     game = new GameController(socket);
 
