@@ -20,5 +20,6 @@ body {
 }
 
 .bullet{
-    border:5px solid red;
+    position: absolute;
+    border:2px solid red;
 }

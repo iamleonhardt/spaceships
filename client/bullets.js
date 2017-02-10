@@ -1,12 +1,12 @@
-function Bullet(parent, x, y, trajectory){
+function Bullet(parent){
     var self = this;
     this.parent = parent;
     this.domElem = null;
 
-    this.x = x;
-    this.y = y;
+    this.x = parent.x;
+    this.y = parent.y;
     this.speed = 50;
-    this.trajectory = trajectory;
+    this.trajectory = parent.rotation;
 
     this.createDomElem = function () {
         this.domElem = $('<div>', {
@@ -25,16 +25,16 @@ function Bullet(parent, x, y, trajectory){
     };
 
     this.shootBullet = function () {
-        var temp_angle = self.trajectory + 270;
+        var temp_angle = self.trajectory + 280;
         var delta_x = Math.cos(self.get_radians(temp_angle)) * self.speed;
         var delta_y = Math.sin(self.get_radians(temp_angle)) * self.speed;
-        self.x += delta_x;
-        self.y += delta_y;
+        console.log()
+        // self.x += delta_x;
+        // self.y += delta_y;
         self.domElem.css({
             top : '+='+delta_y+'px',
             left : '+='+delta_x+'px'
         })
-    
     }
 
     this.get_radians = function (degrees) {
@@ -42,3 +42,9 @@ function Bullet(parent, x, y, trajectory){
     }
 
 }
+
+    this.bulletDie = function () {
+        console.log('destroying ship... kapow');
+        $(this.domElem).remove();
+
+    }

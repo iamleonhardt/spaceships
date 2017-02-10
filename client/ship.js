@@ -35,13 +35,17 @@ function Ship(initPack) {
         return this.domElem;
     };
 
+    this.shootBullet = function(){
+        
+    }
+
     this.createBullet = function(){
         if (self.bullets > 0){
-            var shot = new Bullet(self.id, self.x, self.y, self.rotation);
+            var shot = new Bullet(game.shipList[selfId]);
             self.liveBulletList.push(shot);
-            this.gameArea.append(shot.createDomElem);
-            
-            
+            var bang = shot.createDomElem();
+            game.gameArea.append(bang);
+            self.shootBullet()            
         }
     }
 

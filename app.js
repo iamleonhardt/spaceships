@@ -155,6 +155,10 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
+    socket.on('askForId', function(){
+        socket.emit('answerForId', {key: socket.id});
+    })
+
     // Keypress event used to handle movement and keypresses
     socket.on('keyPress', function (data) {
         if (data.inputId === 'up') {
