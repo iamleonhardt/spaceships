@@ -1,4 +1,5 @@
 function GameController(socket){
+    var self = this;
     this.shipList = {};
     this.mapController = null;
 
@@ -28,14 +29,16 @@ function GameController(socket){
         this.gameArea.append(mapElement);
     }
     this.handle_keypress = function (e) {
-        console.log('key press', this);
+        console.log(selfId);
         switch (e.which) {
             case 119: //thrust pressed
                 console.log('thrust pressed');
+                self.shipList[selfId].move_ship();
                 // _this.player_mobile.thrust();
                 break;
             case 100: //turn right
                 console.log('turn right pressed');
+                self.shipList[selfId].rotateRight();
                 //event "this" redeclaration workaround #1
                 //_this.player_mobile.turn();
                 //event "this" redeclaration workaround #2, see //REDEC WORKAROUND #2 for more details
@@ -47,6 +50,7 @@ function GameController(socket){
                 break;
             case 97: //turn left pressed
                 console.log('turn left pressed');
+                self.shipList[selfId].rotateRight();
                 // _this.player_mobile.turn(-1);
                 break;
             default:

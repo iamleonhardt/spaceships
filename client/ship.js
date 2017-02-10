@@ -18,9 +18,11 @@ function Ship(initPack){
     this.acceleration = 1;
     this.rotationSpeed = 15;
     this.maxSpeed = 20;
+    this.rotationSpeed = 15;
 
     this.tempX = self.x;
     this.tempY = self.y;
+    this.tempRot = self.rotation;
 
     //i used some of dans crazy movement ideas
 	this.get_radians = function(degrees){
@@ -36,8 +38,19 @@ function Ship(initPack){
 		var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
 		var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
         self.tempX += delta_x;
-        self.tempY += delta_y;	
+        self.tempY += delta_y;
+        socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});	
 	}
+
+    this.rotateRight = function(){
+        self.tempRot -= self.rotationSpeed;
+        socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});
+    }
+
+    this.rotateRight = function(){
+        self.tempRot += self.rotationSpeed;
+        socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});
+    }
 
     this.createDomElem = function(){
         this.domElem = $('<div>', {

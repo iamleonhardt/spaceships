@@ -11,6 +11,7 @@
 
 <script>
     var game;
+    var selfId;
 
     $(document).ready(function () {
         game.init('#gameArea');
@@ -112,6 +113,21 @@
     }, 40);
 
     game = new GameController(socket);
+
+    function askForId(){
+        socket.emit('askForId');
+    }
+
+    socket.on('answerForId', function(data){
+        selfId = data.id;
+        console.log(selfId);
+    })
+
+    askForId();
+    
+    if (selfId === undefined){
+        askForId();
+    }
 
     //keystates to control the directions
     // var keyStates = { w:false, s:false, a:false, d:false };
