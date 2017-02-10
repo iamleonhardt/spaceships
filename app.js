@@ -36,86 +36,36 @@ function Ship(socket) {
         id: socket.id,
         shipColor: 'white',
         maxSpeed: 20,
-        pressingRight:false,
-        pressingLeft:false,
-        pressingUp:false,
-        pressingDown:false
+        pressingRight: false,
+        pressingLeft: false,
+        pressingUp: false,
+        pressingDown: false
     }
 
     // Update will contain all things that get updated
     self.update = function () {
-        console.log('inner update fired');
+        // console.log('inner update fired');
         self.updatePosition();
     }
 
     // Updates the position
     self.updatePosition = function () {
-        if (self.pressingUp){
+        // console.log(self.pressingUp);
+        if (self.pressingUp) {
             console.log('thrust forward');
             self.move_ship();
         }
-        if(self.pressingDown){
+        if (self.pressingDown) {
             console.log('back pressed');
         }
-        if(self.pressingLeft){
+        if (self.pressingLeft) {
             console.log('left pressed');
             self.rotation -= self.rotationSpeed;
         }
-        if(self.pressingRight){
+        if (self.pressingRight) {
             console.log('right pressed');
             self.rotation += self.rotationSpeed;
-        }
-        // var filtered = [];
-        // if (data) {
-        //     //when theres data it filters the keys that are true then applies the correct movement
-        //     var keys = Object.keys(data);
-        //     filtered = keys.filter(function (key) {
-        //         return data[key];
-        //     });
-        // }
-        // filtered = filtered.join('');
-        // // console.log(filtered);
-
-        // //this switch is kind of fat any ideas on a better way around this?
-        // switch (filtered) {
-        //     case 'wad':
-        //         self.move_ship();
-        //         break;
-        //     case 'sad':
-        //         break;
-        //     case 'wd':
-        //         self.move_ship();
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     case 'wa':
-        //         self.move_ship();
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'sa':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'sd':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     case 'w':
-        //         self.move_ship();
-        //         break;
-        //     case 's':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         break;
-        //     case 'a':
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'd':
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     default:
-        //         // self.acceleration = 1;
-        //         // self.speed = 1;
-        //         break;
-        // }
+        } 
     }
 
     //i used some of dans crazy movement ideas
@@ -192,7 +142,7 @@ Ship.update = function () {
     for (var i in shipList) {
         var ship = shipList[i];
         //when update contains the id and keydata, it updatesPosition for that specific ship 
-        ship.updatePosition();
+        ship.update();
         updatePack.push(ship.getUpdatePack());
     }
     return updatePack;
@@ -207,23 +157,20 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
-    // move ship event uses the Ship.update method
+    // Keypress event used to handle movement and keypresses
     socket.on('keyPress', function (data) {
-        
-        if(data.inputId === 'up'){
-            socketList[socket.id].pressingUp = data.state;
-            console.log(socketList[socket.id].pressingUp)
-        } 
-        else if(data.inputId === 'down'){
-            socketList[socket.id].pressingDown = data.state;
+        if (data.inputId === 'up') {
+            shipList[socket.id].pressingUp = data.state;
         }
-        else if(data.inputId === 'left'){
-            socketList[socket.id].pressingLeft = data.state;
+        else if (data.inputId === 'down') {
+            shipList[socket.id].pressingDown = data.state;
         }
-        else if(data.inputId === 'right'){
-            socketList[socket.id].pressingRight = data.state;
-        }   
-        // Ship.update(socket.id, data)
+        else if (data.inputId === 'left') {
+            shipList[socket.id].pressingLeft = data.state;
+        }
+        else if (data.inputId === 'right') {
+            shipList[socket.id].pressingRight = data.state;
+        }
     })
 
     socket.on('disconnect', function () {
@@ -253,4 +200,4 @@ setInterval(function () {
     initPack.ships = [];
     removePack.ships = [];
 
-}, 20);
+}, 40);
