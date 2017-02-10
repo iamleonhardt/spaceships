@@ -37,85 +37,85 @@ function Ship(socket) {
         shipColor: 'white',
         maxSpeed: 20
     }
-    
+
     // Update will contain all things that get updated
     self.update = function () {
         console.log('inner update fired');
         self.updatePosition();
     }
-    
+
     // Updates the position
     self.updatePosition = function (data) {
         var filtered = [];
-        if(data){
+        if (data) {
             //when theres data it filters the keys that are true then applies the correct movement
             var keys = Object.keys(data);
-            filtered = keys.filter(function(key) {
+            filtered = keys.filter(function (key) {
                 return data[key];
             });
         }
-            filtered = filtered.join('');
-            // console.log(filtered);
+        filtered = filtered.join('');
+        // console.log(filtered);
 
-            //this switch is kind of fat any ideas on a better way around this?
-            switch(filtered){
-                case 'wad':
-                    self.move_ship();
-                    break;
-                case 'sad':
-                    break;
-                case 'wd':
-                    self.move_ship();
-                    self.rotation += self.rotationSpeed;
-                    break;
-                case 'wa':
-                    self.move_ship();
-                    self.rotation -= self.rotationSpeed;
-                    break;
-                case 'sa':
-                    // self.y += self.speed + ++self.acceleration;
-                    self.rotation -= self.rotationSpeed;
-                    break;
-                case 'sd':
-                    // self.y += self.speed + ++self.acceleration;
-                    self.rotation += self.rotationSpeed;
-                    break;
-                case 'w':
-                    self.move_ship();
-                    break;
-                case 's':
-                    // self.y += self.speed + ++self.acceleration;
-                    break;
-                case 'a':
-                    self.rotation -= self.rotationSpeed;
-                    break;
-                case 'd':
-                    self.rotation += self.rotationSpeed;
-                    break;
-                default:
-                    // self.acceleration = 1;
-                    // self.speed = 1;
-                    break;
-            }
+        //this switch is kind of fat any ideas on a better way around this?
+        switch (filtered) {
+            case 'wad':
+                self.move_ship();
+                break;
+            case 'sad':
+                break;
+            case 'wd':
+                self.move_ship();
+                self.rotation += self.rotationSpeed;
+                break;
+            case 'wa':
+                self.move_ship();
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'sa':
+                // self.y += self.speed + ++self.acceleration;
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'sd':
+                // self.y += self.speed + ++self.acceleration;
+                self.rotation += self.rotationSpeed;
+                break;
+            case 'w':
+                self.move_ship();
+                break;
+            case 's':
+                // self.y += self.speed + ++self.acceleration;
+                break;
+            case 'a':
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'd':
+                self.rotation += self.rotationSpeed;
+                break;
+            default:
+                // self.acceleration = 1;
+                // self.speed = 1;
+                break;
         }
-    
-    //i used some of dans crazy movement ideas
-	self.get_radians = function(degrees){
-		return (Math.PI/180) * degrees;
-	}
-    //this get speed function needs a little redoing
-    self.get_speed = function(){
-        return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed; 
     }
-	self.move_ship = function(){
-		var temp_angle = self.rotation + 270;
+
+    //i used some of dans crazy movement ideas
+    self.get_radians = function (degrees) {
+        return (Math.PI / 180) * degrees;
+    }
+    //this get speed function needs a little redoing
+    self.get_speed = function () {
+        return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
+    }
+    self.move_ship = function () {
+        var temp_angle = self.rotation + 270;
         var speed = self.get_speed();
-		var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
-		var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
+        var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
+        var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
         self.x += delta_x;
-        self.y += delta_y;	
-	}
-    
+        self.y += delta_y;
+    }
+
     // Gets all of the game data to send when a new player joins
     self.getInitPack = function () {
         return {
@@ -169,14 +169,14 @@ Ship.onDisconnect = function (socket) {
 Ship.update = function (id, data) {
     // console.log('outer update fired');
     var updatePack = [];
-    
+
     for (var i in shipList) {
         var ship = shipList[i];
         //when update contains the id and keydata, it updatesPosition for that specific ship
-        if(id && data && ship == shipList[id]){
+        if (id && data && ship == shipList[id]) {
             console.log('moving');
             shipList[id].updatePosition(data);
-        }else{
+        } else {
             ship.updatePosition();
         }
         updatePack.push(ship.getUpdatePack());
@@ -194,8 +194,8 @@ io.sockets.on('connection', function (socket) {
     Ship.onConnect(socket);
 
     // move ship event uses the Ship.update method
-    socket.on('moveShip', function(data){
-       Ship.update(socket.id, data)
+    socket.on('moveShip', function (data) {
+        Ship.update(socket.id, data)
     })
 
     socket.on('disconnect', function () {
@@ -213,16 +213,16 @@ setInterval(function () {
         // bullets: Bullet.update()
     };
 
-// console.log(Object.keys(shipList));
+    // console.log(Object.keys(shipList));
 
     for (var i in socketList) {
         var socket = socketList[i];
         socket.emit('remove', removePack);
         socket.emit('init', initPack);
         socket.emit('update', updatePack);
-        
+
     }
     initPack.ships = [];
     removePack.ships = [];
 
-}, 40);
+}, 20);

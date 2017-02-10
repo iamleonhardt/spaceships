@@ -10,7 +10,6 @@
 <div id="gameArea"></div>
 
 <script>
-
     var game;
 
     $(document).ready(function () {
@@ -26,37 +25,37 @@
     // Init - When new stuff created, contains all the data
 
     socket.on('init', function (initPack) {
-            var shipExists = false;
+        var shipExists = false;
 
-            // Check if shipList is empty, if so fill it with ships
-            if ($.isEmptyObject(game.shipList)) {
-                for (var i in initPack.ships) {
-                    console.log('putting together new ship');
+        // Check if shipList is empty, if so fill it with ships
+        if ($.isEmptyObject(game.shipList)) {
+            for (var i in initPack.ships) {
+                console.log('putting together new ship');
+                game.makeShip(initPack.ships[i]);
+            }
+            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+        }
+        else {
+            var objKeys = Object.keys(game.shipList);
+            for (var i in initPack.ships) {
+                for (var j in objKeys) {
+                    if (initPack.ships[i].id == objKeys[j]) {
+                        shipExists = true;
+                    }
+                }
+                if (!shipExists) {
+                    console.log('no matches found, lets build a ship');
                     game.makeShip(initPack.ships[i]);
                 }
-                // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
-            }
-            else {
-                var objKeys = Object.keys(game.shipList);
-                for (var i in initPack.ships) {
-                    for (var j in objKeys) {
-                        if (initPack.ships[i].id == objKeys[j]) {
-                            shipExists = true;
-                        }
-                    }
-                    if (!shipExists) {
-                        console.log('no matches found, lets build a ship');
-                        game.makeShip(initPack.ships[i]);
-                    }
-                    shipExists = false;
-                }
+                shipExists = false;
             }
         }
+    }
     )
 
     // Update - Contains the difference when things change
     socket.on('update', function (data) {
-//        console.log('update triggered and data is : ', data);
+        //        console.log('update triggered and data is : ', data);
 
         // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
         for (var i in data.ships) {
@@ -79,7 +78,7 @@
                 ship.domElem.css({
                     left: ship.x + 'px',
                     top: ship.y + 'px',
-                    'transform' : 'rotateZ('+ship.rotation+'deg)'
+                    'transform': 'rotateZ(' + ship.rotation + 'deg)'
                 });
             }
         }
@@ -100,41 +99,42 @@
 
 
     setInterval(function () {
-    //    console.log('shipList is : ', game.shipList);
+        //    console.log('shipList is : ', game.shipList);
         for (var i in game.shipList) {
             // update position
             var ship = game.shipList[i];
-        //    console.log('ship is : ', ship);
+            //    console.log('ship is : ', ship);
             ship.domElem.css({
                 left: ship.x + 'px',
-                top: ship.y + 'px'
+                top: ship.y + 'px',
+                'transform': 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
-    }, 40);
+    }, 20);
 
     game = new GameController(socket);
 
     //keystates to control the directions
-    var keyStates = { w:false, s:false, a:false, d:false };
+    var keyStates = { w: false, s: false, a: false, d: false };
     var keyMap = Object.keys(keyStates);
 
     //moveShip function to emit the moveShip event to the server
-    function moveShip(data){
+    function moveShip(data) {
         socket.emit('moveShip', data);
     }
 
     //key event listeners to figure out which directional keys are being pressed
     //i tried to rewrite this in jquery but it wasnt capturing the diagonal movement
-    $('body').on('keypress', function(e){
-        if (keyMap.includes(e.key)){
+    $('body').on('keypress', function (e) {
+        if (keyMap.includes(e.key)) {
             keyStates[e.key] = true;
             moveShip(keyStates);
-        } 
-    }).on('keyup', function(e){
-        if (keyMap.includes(e.key)){
+        }
+    }).on('keyup', function (e) {
+        if (keyMap.includes(e.key)) {
             keyStates[e.key] = false;
             // moveShip(keyStates);
-        } 
+        }
     })
 
 </script>
