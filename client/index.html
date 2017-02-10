@@ -132,8 +132,9 @@
     }
 
     //keystates to control the directions
-    // var keyStates = { w:false, s:false, a:false, d:false };
 
+    var keyStates = { w: false, s: false, a: false, d: false };
+    var keyMap = Object.keys(keyStates);
 
     //moveShip function to emit the moveShip event to the server
     function moveShip(data) {
@@ -141,7 +142,17 @@
     }
 
     //key event listeners to figure out which directional keys are being pressed
-    $('body').on('keypress', game.handle_keypress.bind(this));
-    $('body').on('keyup', game.handle_keyup.bind(this));
+    //i tried to rewrite this in jquery but it wasnt capturing the diagonal movement
+    $('body').on('keypress', function (e) {
+        if (keyMap.includes(e.key)) {
+            keyStates[e.key] = true;
+            moveShip(keyStates);
+        }
+    }).on('keyup', function (e) {
+        if (keyMap.includes(e.key)) {
+            keyStates[e.key] = false;
+            // moveShip(keyStates);
+        }
+    })
 
 </script>

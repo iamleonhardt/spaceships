@@ -1,4 +1,4 @@
-function Ship(initPack){
+function Ship(initPack) {
     var self = this;
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
@@ -52,14 +52,14 @@ function Ship(initPack){
         socket.emit('moveShip', {x:self.tempX, y:self.tempY, rotation:self.tempRot});
     }
 
-    this.createDomElem = function(){
+    this.createDomElem = function () {
         this.domElem = $('<div>', {
             id: this.id,
             class: 'ship',
             css: {
                 left: self.x,
                 top: self.y,
-                'transition-duration': 0.1+'s',
+                'transition-duration': 0.1 + 's',
                 // 'background-color': initPack.shipColor,
                 // width: self.width + 'px',
                 // height: self.height + 'px',
@@ -69,7 +69,7 @@ function Ship(initPack){
         return this.domElem;
     };
 
-    this.shipDie = function(){
+    this.shipDie = function () {
         console.log('destroying ship... kapow');
         $(this.domElem).remove();
 

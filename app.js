@@ -47,63 +47,57 @@ function Ship(socket) {
     // Updates the position
     self.updatePosition = function (data) {
 
-        if(data){
-            self.x = data.x;
-            self.y = data.y;
-            self.rotation = data.rotation;
+        var filtered = [];
+        if (data) {
+            //when theres data it filters the keys that are true then applies the correct movement
+            var keys = Object.keys(data);
+            filtered = keys.filter(function (key) {
+                return data[key];
+            });
         }
-        
-        // var filtered = [];
-        // if (data) {
-        //     //when theres data it filters the keys that are true then applies the correct movement
-        //     var keys = Object.keys(data);
-        //     filtered = keys.filter(function (key) {
-        //         return data[key];
-        //     });
-        // }
-        // filtered = filtered.join('');
-        // // console.log(filtered);
+        filtered = filtered.join('');
+        // console.log(filtered);
 
-        // //this switch is kind of fat any ideas on a better way around this?
-        // switch (filtered) {
-        //     case 'wad':
-        //         self.move_ship();
-        //         break;
-        //     case 'sad':
-        //         break;
-        //     case 'wd':
-        //         self.move_ship();
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     case 'wa':
-        //         self.move_ship();
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'sa':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'sd':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     case 'w':
-        //         self.move_ship();
-        //         break;
-        //     case 's':
-        //         // self.y += self.speed + ++self.acceleration;
-        //         break;
-        //     case 'a':
-        //         self.rotation -= self.rotationSpeed;
-        //         break;
-        //     case 'd':
-        //         self.rotation += self.rotationSpeed;
-        //         break;
-        //     default:
-        //         // self.acceleration = 1;
-        //         // self.speed = 1;
-        //         break;
-        // }
+        //this switch is kind of fat any ideas on a better way around this?
+        switch (filtered) {
+            case 'wad':
+                self.move_ship();
+                break;
+            case 'sad':
+                break;
+            case 'wd':
+                self.move_ship();
+                self.rotation += self.rotationSpeed;
+                break;
+            case 'wa':
+                self.move_ship();
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'sa':
+                // self.y += self.speed + ++self.acceleration;
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'sd':
+                // self.y += self.speed + ++self.acceleration;
+                self.rotation += self.rotationSpeed;
+                break;
+            case 'w':
+                self.move_ship();
+                break;
+            case 's':
+                // self.y += self.speed + ++self.acceleration;
+                break;
+            case 'a':
+                self.rotation -= self.rotationSpeed;
+                break;
+            case 'd':
+                self.rotation += self.rotationSpeed;
+                break;
+            default:
+                // self.acceleration = 1;
+                // self.speed = 1;
+                break;
+        }
     }
 
     //i used some of dans crazy movement ideas
@@ -180,8 +174,9 @@ Ship.update = function (id, data) {
     for (var i in shipList) {
         var ship = shipList[i];
         //when update contains the id and keydata, it updatesPosition for that specific ship
+
         if (ship == shipList[id]) {
-            // console.log('moving');
+            console.log('moving');
             shipList[id].updatePosition(data);
         } else {
             ship.updatePosition();
@@ -207,7 +202,6 @@ io.sockets.on('connection', function (socket) {
     // move ship event uses the Ship.update method
     socket.on('moveShip', function (data) {
         Ship.update(socket.id, data)
-        // console.log(data);
     })
 
     socket.on('disconnect', function () {
