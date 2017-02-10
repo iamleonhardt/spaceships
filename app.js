@@ -30,12 +30,16 @@ function Ship(socket) {
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
         speed: 1,
-        // acceleration: 1,
+        acceleration: 1,
         rotation: 0,
-        // rotationSpeed: 15,
+        rotationSpeed: 15,
         id: socket.id,
-        shipColor: 'white'
-
+        shipColor: 'white',
+        maxSpeed: 20,
+        pressingRight:false,
+        pressingLeft:false,
+        pressingUp:false,
+        pressingDown:false
     }
 
     // Update will contain all things that get updated
@@ -45,59 +49,73 @@ function Ship(socket) {
     }
 
     // Updates the position
-    self.updatePosition = function (data) {
-
-        var filtered = [];
-        if (data) {
-            //when theres data it filters the keys that are true then applies the correct movement
-            var keys = Object.keys(data);
-            filtered = keys.filter(function (key) {
-                return data[key];
-            });
+    self.updatePosition = function () {
+        if (self.pressingUp){
+            console.log('thrust forward');
+            self.move_ship();
         }
-        filtered = filtered.join('');
-        // console.log(filtered);
-
-        //this switch is kind of fat any ideas on a better way around this?
-        switch (filtered) {
-            case 'wad':
-                self.move_ship();
-                break;
-            case 'sad':
-                break;
-            case 'wd':
-                self.move_ship();
-                self.rotation += self.rotationSpeed;
-                break;
-            case 'wa':
-                self.move_ship();
-                self.rotation -= self.rotationSpeed;
-                break;
-            case 'sa':
-                // self.y += self.speed + ++self.acceleration;
-                self.rotation -= self.rotationSpeed;
-                break;
-            case 'sd':
-                // self.y += self.speed + ++self.acceleration;
-                self.rotation += self.rotationSpeed;
-                break;
-            case 'w':
-                self.move_ship();
-                break;
-            case 's':
-                // self.y += self.speed + ++self.acceleration;
-                break;
-            case 'a':
-                self.rotation -= self.rotationSpeed;
-                break;
-            case 'd':
-                self.rotation += self.rotationSpeed;
-                break;
-            default:
-                // self.acceleration = 1;
-                // self.speed = 1;
-                break;
+        if(self.pressingDown){
+            console.log('back pressed');
         }
+        if(self.pressingLeft){
+            console.log('left pressed');
+            self.rotation -= self.rotationSpeed;
+        }
+        if(self.pressingRight){
+            console.log('right pressed');
+            self.rotation += self.rotationSpeed;
+        }
+        // var filtered = [];
+        // if (data) {
+        //     //when theres data it filters the keys that are true then applies the correct movement
+        //     var keys = Object.keys(data);
+        //     filtered = keys.filter(function (key) {
+        //         return data[key];
+        //     });
+        // }
+        // filtered = filtered.join('');
+        // // console.log(filtered);
+
+        // //this switch is kind of fat any ideas on a better way around this?
+        // switch (filtered) {
+        //     case 'wad':
+        //         self.move_ship();
+        //         break;
+        //     case 'sad':
+        //         break;
+        //     case 'wd':
+        //         self.move_ship();
+        //         self.rotation += self.rotationSpeed;
+        //         break;
+        //     case 'wa':
+        //         self.move_ship();
+        //         self.rotation -= self.rotationSpeed;
+        //         break;
+        //     case 'sa':
+        //         // self.y += self.speed + ++self.acceleration;
+        //         self.rotation -= self.rotationSpeed;
+        //         break;
+        //     case 'sd':
+        //         // self.y += self.speed + ++self.acceleration;
+        //         self.rotation += self.rotationSpeed;
+        //         break;
+        //     case 'w':
+        //         self.move_ship();
+        //         break;
+        //     case 's':
+        //         // self.y += self.speed + ++self.acceleration;
+        //         break;
+        //     case 'a':
+        //         self.rotation -= self.rotationSpeed;
+        //         break;
+        //     case 'd':
+        //         self.rotation += self.rotationSpeed;
+        //         break;
+        //     default:
+        //         // self.acceleration = 1;
+        //         // self.speed = 1;
+        //         break;
+        // }
     }
 
     //i used some of dans crazy movement ideas
@@ -167,20 +185,14 @@ Ship.onDisconnect = function (socket) {
     removePack.ships.push(socket.id);
 };
 
-Ship.update = function (id, data) {
+Ship.update = function () {
     // console.log('outer update fired');
     var updatePack = [];
 
     for (var i in shipList) {
         var ship = shipList[i];
-        //when update contains the id and keydata, it updatesPosition for that specific ship
-
-        if (ship == shipList[id]) {
-            console.log('moving');
-            shipList[id].updatePosition(data);
-        } else {
-            ship.updatePosition();
-        }
+        //when update contains the id and keydata, it updatesPosition for that specific ship 
+        ship.updatePosition();
         updatePack.push(ship.getUpdatePack());
     }
     return updatePack;
@@ -195,13 +207,23 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
-    socket.on('askForId', function(){
-        socket.emit('answerForId', {id:socket.id})
-    })
-
     // move ship event uses the Ship.update method
-    socket.on('moveShip', function (data) {
-        Ship.update(socket.id, data)
+    socket.on('keyPress', function (data) {
+        
+        if(data.inputId === 'up'){
+            socketList[socket.id].pressingUp = data.state;
+            console.log(socketList[socket.id].pressingUp)
+        } 
+        else if(data.inputId === 'down'){
+            socketList[socket.id].pressingDown = data.state;
+        }
+        else if(data.inputId === 'left'){
+            socketList[socket.id].pressingLeft = data.state;
+        }
+        else if(data.inputId === 'right'){
+            socketList[socket.id].pressingRight = data.state;
+        }   
+        // Ship.update(socket.id, data)
     })
 
     socket.on('disconnect', function () {
