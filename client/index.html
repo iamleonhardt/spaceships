@@ -1,7 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <link rel="stylesheet" href="style.css">
-
+<script src='bullets.js'></script>
 <script src="ship.js"></script>
 <script src="game.js"></script>
 <!-- dan game map code -->
@@ -56,7 +56,6 @@
     // Update - Contains the difference when things change
     socket.on('update', function (data) {
         //        console.log('update triggered and data is : ', data);
-
         // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
         for (var i in data.ships) {
 
@@ -97,7 +96,6 @@
         }
     });
 
-
     setInterval(function () {
         //    console.log('shipList is : ', game.shipList);
         for (var i in game.shipList) {
@@ -116,6 +114,7 @@
 
     //rewritten movement controls are more fluid
     $('body').on('keypress', function (e) {
+        // console.log(e.keyCode)
         if (e.key === 'w') {
             socket.emit('keyPress', { inputId: 'up', state: true });
         }
@@ -127,6 +126,9 @@
         }
         else if (e.key === 'd') {
             socket.emit('keyPress', { inputId: 'right', state: true });
+        }
+        else if (e.keyCode === 32) {
+            socket.emit('keyPress', { inputId: 'space', state: true });
         }
         
     }).on('keyup', function (e) {
@@ -141,6 +143,9 @@
         }
         else if (e.key === 'd') {
             socket.emit('keyPress', { inputId: 'right', state: false });
+        }
+        else if (e.keyCode === 32) {
+            socket.emit('keyPress', { inputId: 'space', state: false });
         }
     
     })

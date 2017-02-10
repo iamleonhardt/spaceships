@@ -2,6 +2,8 @@ function Ship(initPack) {
     var self = this;
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
+    this.bullets = initPack.bullets;
+    this.liveBulletList = [];
 
     this.width = 30;
     this.height = 30;
@@ -32,6 +34,16 @@ function Ship(initPack) {
         });
         return this.domElem;
     };
+
+    this.createBullet = function(){
+        if (self.bullets > 0){
+            var shot = new Bullet(self.id, self.x, self.y, self.rotation);
+            self.liveBulletList.push(shot);
+            this.gameArea.append(shot.createDomElem);
+            
+            
+        }
+    }
 
     this.shipDie = function () {
         console.log('destroying ship... kapow');

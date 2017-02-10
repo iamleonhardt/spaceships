@@ -29,6 +29,7 @@ function Ship(socket) {
     var self = {
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
+        bullets:30,
         speed: 1,
         acceleration: 1,
         rotation: 0,
@@ -50,20 +51,16 @@ function Ship(socket) {
 
     // Updates the position
     self.updatePosition = function () {
-        // console.log(self.pressingUp);
         if (self.pressingUp) {
-            console.log('thrust forward');
             self.move_ship();
         }
         if (self.pressingDown) {
-            console.log('back pressed');
+            console.log('backpress');
         }
         if (self.pressingLeft) {
-            console.log('left pressed');
             self.rotation -= self.rotationSpeed;
         }
         if (self.pressingRight) {
-            console.log('right pressed');
             self.rotation += self.rotationSpeed;
         } 
     }
@@ -91,6 +88,7 @@ function Ship(socket) {
             id: self.id,
             x: self.x,
             y: self.y,
+            bullets: self.bullets,
             shipColor: self.shipColor
         }
     }
@@ -101,6 +99,7 @@ function Ship(socket) {
             id: self.id,
             x: self.x,
             y: self.y,
+            bullets: self.bullets,
             rotation: self.rotation
         }
     }
@@ -141,7 +140,6 @@ Ship.update = function () {
 
     for (var i in shipList) {
         var ship = shipList[i];
-        //when update contains the id and keydata, it updatesPosition for that specific ship 
         ship.update();
         updatePack.push(ship.getUpdatePack());
     }

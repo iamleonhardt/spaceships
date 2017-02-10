@@ -18,3 +18,7 @@ body {
     border-width: 0 12.5px 25px 12.5px;
     border-color: transparent transparent #007bff transparent;
 }
+
+.bullet{
+    border:5px solid red;
+}
