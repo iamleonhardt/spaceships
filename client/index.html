@@ -110,31 +110,39 @@
                 'transform': 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
-    }, 20);
+    }, 40);
 
     game = new GameController(socket);
 
-    //keystates to control the directions
-    var keyStates = { w: false, s: false, a: false, d: false };
-    var keyMap = Object.keys(keyStates);
-
-    //moveShip function to emit the moveShip event to the server
-    function moveShip(data) {
-        socket.emit('moveShip', data);
-    }
-
-    //key event listeners to figure out which directional keys are being pressed
-    //i tried to rewrite this in jquery but it wasnt capturing the diagonal movement
+    //rewritten movement controls are more fluid
     $('body').on('keypress', function (e) {
-        if (keyMap.includes(e.key)) {
-            keyStates[e.key] = true;
-            moveShip(keyStates);
+        if (e.key === 'w') {
+            socket.emit('keyPress', { inputId: 'up', state: true });
         }
+        else if (e.key === 's') {
+            socket.emit('keyPress', { inputId: 'down', state: true });
+        }
+        else if (e.key === 'a') {
+            socket.emit('keyPress', { inputId: 'left', state: true });
+        }
+        else if (e.key === 'd') {
+            socket.emit('keyPress', { inputId: 'right', state: true });
+        }
+        
     }).on('keyup', function (e) {
-        if (keyMap.includes(e.key)) {
-            keyStates[e.key] = false;
-            // moveShip(keyStates);
+        if (e.key === 'w') {
+            socket.emit('keyPress', { inputId: 'up', state: false });
         }
+        else if (e.key === 's') {
+            socket.emit('keyPress', { inputId: 'down', state: false });
+        }
+        else if (e.key === 'a') {
+            socket.emit('keyPress', { inputId: 'left', state: false });
+        }
+        else if (e.key === 'd') {
+            socket.emit('keyPress', { inputId: 'right', state: false });
+        }
+    
     })
 
 </script>
