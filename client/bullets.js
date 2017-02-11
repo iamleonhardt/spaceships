@@ -1,5 +1,6 @@
 function Bullet(parent){
     var self = this;
+    this.id = Math.random();
     this.parent = parent;
     this.domElem = null;
 

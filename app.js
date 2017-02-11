@@ -25,23 +25,51 @@ function getRanNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function Ship(socket) {
+function Entity() {
     var self = {
-        x: getRanNum(100, 500),
-        y: getRanNum(100, 500),
-        bullets:30,
-        speed: 1,
-        acceleration: 1,
-        rotation: 0,
-        rotationSpeed: 15,
-        id: socket.id,
-        shipColor: 'white',
-        maxSpeed: 20,
-        pressingRight: false,
-        pressingLeft: false,
-        pressingUp: false,
-        pressingDown: false
+        x: 0,
+        y: 0,
+        speedX: 0,
+        speedY: 0,
+        id: ''
     }
+
+    self.update = function () {
+        // console.log('inner update fired');
+        self.updatePosition();
+    }
+
+    // Updates the position
+    self.updatePosition = function () {
+        self.x += self.speedX;
+        self.y += self.speedY;
+    }
+
+    return self;
+
+}
+
+function Bullet() {
+
+}
+
+function Ship(socket) {
+    var self = new Entity();
+    self.x = getRanNum(100, 500);
+    self.y = getRanNum(100, 500);
+    self.bullets = 30;
+    self.speed = 1;
+    self.acceleration = 1;
+    self.rotation = 0;
+    self.rotationSpeed = 15;
+    self.id = socket.id;
+    self.shipColor = 'white';
+    self.maxSpeed = 20;
+    self.pressingRight = false;
+    self.pressingLeft = false;
+    self.pressingUp = false;
+    self.pressingDown = false;
+
 
     // Update will contain all things that get updated
     self.update = function () {
@@ -62,7 +90,7 @@ function Ship(socket) {
         }
         if (self.pressingRight) {
             self.rotation += self.rotationSpeed;
-        } 
+        }
     }
 
     //i used some of dans crazy movement ideas
@@ -155,8 +183,8 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
-    socket.on('askForId', function(){
-        socket.emit('answerForId', {key: socket.id});
+    socket.on('askForId', function () {
+        socket.emit('answerForId', { key: socket.id });
     })
 
     // Keypress event used to handle movement and keypresses

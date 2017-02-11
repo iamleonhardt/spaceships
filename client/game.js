@@ -1,5 +1,6 @@
 function GameController(socket) {
     this.shipList = {};
+    this.bulletList = {};
     this.mapController = null;
 
     this.init = function (gameAreaSelector) {

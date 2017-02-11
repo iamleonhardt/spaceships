@@ -3,7 +3,6 @@ function Ship(initPack) {
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
     this.bullets = initPack.bullets;
-    this.liveBulletList = [];
 
     this.width = 30;
     this.height = 30;
@@ -35,17 +34,18 @@ function Ship(initPack) {
         return this.domElem;
     };
 
-    this.shootBullet = function(){
+    this.shootBullet = function(shot){
         
     }
 
     this.createBullet = function(){
         if (self.bullets > 0){
             var shot = new Bullet(game.shipList[selfId]);
-            self.liveBulletList.push(shot);
             var bang = shot.createDomElem();
             game.gameArea.append(bang);
-            self.shootBullet()            
+            game.bulletList[shot.id] = shot;
+            self.shootBullet(shot);
+                        
         }
     }
 
