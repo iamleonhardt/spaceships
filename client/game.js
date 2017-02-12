@@ -58,6 +58,8 @@ function GameController(socket) {
             if(pilotName == ''){
                 pilotName = 'Drone';
             }
+            // Pass the info to the server to make the ship
+            $('#chooseTeamDiv').hide();
         }
     };
 
