@@ -7,10 +7,74 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: #141421;
+    background-image: url('images/starsBg.png');
 }
 
 
 .ship {
     position: absolute;
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    /*border-style: solid;*/
+    /*border-width: 0 12.5px 25px 12.5px;*/
+    /*border-color: transparent transparent #007bff transparent;*/
+}
+
+/*Green Ships*/
+.shipG1 {
+    background: url(images/ships.PNG) 0 0;
+}
+
+.shipG2 {
+    background: url(images/ships.PNG) -48px 0;
+}
+
+.shipG3 {
+    background: url(images/ships.PNG) -96px 0;
+}
+
+.shipG4 {
+    background: url(images/ships.PNG) -144px 0;
+}
+
+.shipG5 {
+    background: url(images/ships.PNG) -192px 0;
+}
+
+.shipG6 {
+    background: url(images/ships.PNG) -240px 0;
+}
+
+.shipG7 {
+    background: url(images/ships.PNG) -288px 0;
+}
+
+
+/*Red Ships*/
+.shipR1 {
+    background: url(images/ships.PNG) 0 -48px;
+}
+
+.shipR2 {
+    background: url(images/ships.PNG) -48px -48px;
+}
+
+.shipR3 {
+    background: url(images/ships.PNG) -96px -48px;
+}
+
+.shipR4 {
+    background: url(images/ships.PNG) -144px -48px;
+}
+
+.shipR5 {
+    background: url(images/ships.PNG) -192px -48px;
+}
+
+.shipR6 {
+    background: url(images/ships.PNG) -240px -48px;
+}
+
+.shipR7 {
+    background: url(images/ships.PNG) -288px -48px;
 }

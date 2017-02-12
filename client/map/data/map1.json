@@ -1,0 +1,8 @@
+{
+  "meta": {
+    "name": "map1",
+    "author": "Dan",
+    "created": "2017-02-05"
+  },
+  "mapData": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"1070px\" height=\"520px\" viewBox=\"0 0  1070 520\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1070\" height=\"520\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"132 99 288 98 325 231 228 289 78 273 58 180\" fill=\"#545250\"/><polygon stroke=\"black\" id=\"e29_polygon\" style=\"stroke-width: 1px;\" points=\"708 184 801 212 912 300 844 408 628 415 581 239 463 136 566 66 663 79\" fill=\"#545250\"/><polygon stroke=\"black\" id=\"e58_polygon\" style=\"stroke-width: 1px;\" points=\"47 368 272 351 432 371 485.5 454 333 501 124 493 17 443\" fill=\"#545250\" /></svg>"
+}
