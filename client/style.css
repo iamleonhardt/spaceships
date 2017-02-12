@@ -26,8 +26,8 @@ body {
 .teamBtn {
     font-size: 18px;
     color: #f2e8d5;
-    line-height:56px;
-    height: 56px;
+    line-height:46px;
+    height: 46px;
     width: 119px;
     margin: 0 4px;
     display: inline-block;
@@ -48,7 +48,7 @@ body {
 }
 
 #shipSelectSection {
-    margin-top: 20px;
+    margin-top: 26px;
 }
 
 .shipChoice {
@@ -63,9 +63,10 @@ body {
     /*background: #3B5998;*/
     position: relative;
     border-radius: 5px;
+}
 
-    /*top: 50%;*/
-    /*transform: translateY(-50%);*/
+.selectedShip {
+    box-shadow: 0 0 5px 1px #fff;
 }
 
 #selectShipText {
@@ -82,7 +83,7 @@ body {
     font-family: sans-serif;
     font-size: 18px;
     box-shadow: none;
-    border-radius: none;
+    /*border-radius: none;*/
     border-radius: 5px;
 
     padding: 10px;
@@ -99,13 +100,13 @@ body {
 #joinBtn {
     background: #e0e0e0;
     display: inline-block;
-    margin: 0;
+    /*margin: 0;*/
     height: 23px;
     width: 165px;
     font-family: sans-serif;
     font-size: 18px;
     box-shadow: none;
-    border-radius: none;
+    /*border-radius: none;*/
     padding: 10px;
     margin: 3px;
     border-radius: 5px;
@@ -136,88 +137,88 @@ body {
 
 /*Green Ships*/
 .shipGreen1 {
-    background: url(images/ships.PNG) 0 0;
+    background: url(images/ships.png) 0 0;
 }
 
 .shipGreen2 {
-    background: url(images/ships.PNG) -48px 0;
+    background: url(images/ships.png) -48px 0;
 }
 
 .shipGreen3 {
-    background: url(images/ships.PNG) -96px 0;
+    background: url(images/ships.png) -96px 0;
 }
 
 .shipGreen4 {
-    background: url(images/ships.PNG) -144px 0;
+    background: url(images/ships.png) -144px 0;
 }
 
 .shipGreen5 {
-    background: url(images/ships.PNG) -192px 0;
+    background: url(images/ships.png) -192px 0;
 }
 
 .shipGreen6 {
-    background: url(images/ships.PNG) -240px 0;
+    background: url(images/ships.png) -240px 0;
 }
 
 .shipGreen7 {
-    background: url(images/ships.PNG) -288px 0;
+    background: url(images/ships.png) -288px 0;
 }
 
 
 /*Red Ships*/
 .shipRed1 {
-    background: url(images/ships.PNG) 0 -48px;
+    background: url(images/ships.png) 0 -48px;
 }
 
 .shipRed2 {
-    background: url(images/ships.PNG) -48px -48px;
+    background: url(images/ships.png) -48px -48px;
 }
 
 .shipRed3 {
-    background: url(images/ships.PNG) -96px -48px;
+    background: url(images/ships.png) -96px -48px;
 }
 
 .shipRed4 {
-    background: url(images/ships.PNG) -144px -48px;
+    background: url(images/ships.png) -144px -48px;
 }
 
 .shipRed5 {
-    background: url(images/ships.PNG) -192px -48px;
+    background: url(images/ships.png) -192px -48px;
 }
 
 .shipRed6 {
-    background: url(images/ships.PNG) -240px -48px;
+    background: url(images/ships.png) -240px -48px;
 }
 
 .shipRed7 {
-    background: url(images/ships.PNG) -288px -48px;
+    background: url(images/ships.png) -288px -48px;
 }
 
 /*Gold Ships*/
 .shipGold1 {
-    background: url(images/ships.PNG) 0 -96px;
+    background: url(images/ships.png) 0 -96px;
 }
 
 .shipGold2 {
-    background: url(images/ships.PNG) -48px -96px;
+    background: url(images/ships.png) -48px -96px;
 }
 
 .shipGold3 {
-    background: url(images/ships.PNG) -96px -96px;
+    background: url(images/ships.png) -96px -96px;
 }
 
 .shipGold4 {
-    background: url(images/ships.PNG) -144px -96px;
+    background: url(images/ships.png) -144px -96px;
 }
 
 .shipGold5 {
-    background: url(images/ships.PNG) -192px -96px;
+    background: url(images/ships.png) -192px -96px;
 }
 
 .shipGold6 {
-    background: url(images/ships.PNG) -240px -96px;
+    background: url(images/ships.png) -240px -96px;
 }
 
 .shipGold7 {
-    background: url(images/ships.PNG) -288px -96px;
+    background: url(images/ships.png) -288px -96px;
 }

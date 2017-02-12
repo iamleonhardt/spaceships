@@ -21,19 +21,17 @@ function GameController(socket) {
         var color = $(this).attr('id');
         console.log('team was clicked and this is : ', this);
         $('#selectShipText').text('Select a Ship');
-        $('#shipChoice1').attr('class', 'shipChoice ship' + color + '1');
-        $('#shipChoice2').attr('class', 'shipChoice ship' + color + '2');
-        $('#shipChoice3').attr('class', 'shipChoice ship' + color + '3');
-        $('#shipChoice4').attr('class', 'shipChoice ship' + color + '4');
-        $('#shipChoice5').attr('class', 'shipChoice ship' + color + '5');
-        $('#shipChoice6').attr('class', 'shipChoice ship' + color + '6');
-        $('#shipChoice7').attr('class', 'shipChoice ship' + color + '7');
+
+        for (var i = 1; i < 8; i++){
+            $('#shipChoice' + i).attr('class', 'shipChoice ship' + color + i);
+        }
     };
 
     this.shipSelected = function(){
       //store value
         console.log('click and this is : ', this);
-        $(this).attr('style', 'box-shadow:  0 0 5px 1px #fff')
+        $('.shipChoice').removeClass('selectedShip');
+        $(this).addClass('selectedShip');
     };
 
     this.instantiateMap = function (mapLoadedHandler, options) {
@@ -42,11 +40,11 @@ function GameController(socket) {
         }
         this.mapController = new GameMap();
         this.mapController.init('map/data/map1.json', mapLoadedHandler, options);
-    }
+    };
     this.handleMapLoad = function (mapElement) {
         console.log('map is loaded');
         this.gameArea.append(mapElement);
-    }
+    };
 
     this.makeShip = function (initPack) {
         // console.log('putting together new ship');
