@@ -150,11 +150,8 @@ Ship.update = function () {
 
 // Socket IO
 io.sockets.on('connection', function (socket) {
-
     socket.id = Math.random();
     socketList[socket.id] = socket;
-    // console.log('socket connected and socket.id is : ', socket.id);
-
     Ship.onConnect(socket);
 
     // Keypress event used to handle movement and keypresses
@@ -177,7 +174,6 @@ io.sockets.on('connection', function (socket) {
         delete socketList[socket.id];
         Ship.onDisconnect(socket);
     })
-
 });
 
 

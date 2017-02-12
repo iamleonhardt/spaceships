@@ -1,13 +1,127 @@
 body {
     padding: 0;
     margin: 0;
+    font-size: 0;
+    font-family: roboto, arial, sans-serif;
 }
 
+/*----- Team Select Content -----*/
+#chooseTeamDiv {
+    width: 410px;
+    height: 228px;
+    background: #1b1b1b;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    padding: 18px 24px;
+    border-radius: 5px;
+}
+
+.chooseTeamSections {
+    margin: 10px;
+    text-align:center;
+}
+
+.teamBtn {
+    font-size: 18px;
+    color: #f2e8d5;
+    line-height:56px;
+    height: 56px;
+    width: 119px;
+    margin: 0 4px;
+    display: inline-block;
+    border-radius: 5px;
+
+}
+
+#Red {
+    background: #861e25;
+}
+
+#Green {
+    background: #4b531a;
+}
+
+#Gold {
+    background: #dd9529;
+}
+
+#shipSelectSection {
+    margin-top: 20px;
+}
+
+.shipChoice {
+    font-size: 18px;
+    color: #f2e8d5;
+    line-height: 48px;
+    text-align: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 3px;
+    display: inline-block;
+    /*background: #3B5998;*/
+    position: relative;
+    border-radius: 5px;
+
+    /*top: 50%;*/
+    /*transform: translateY(-50%);*/
+}
+
+#selectShipText {
+    font-size: 20px;
+    color: #f2e8d5;
+    text-align: center;
+
+}
+
+#pilotNameInput {
+    display: inline-block;
+    margin: 3px;
+    width: 180px;
+    font-family: sans-serif;
+    font-size: 18px;
+    box-shadow: none;
+    border-radius: none;
+    border-radius: 5px;
+
+    padding: 10px;
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
+}
+
+#pilotNameInput:focus, #pilotNameInput.focus {
+    outline: none;
+    border-bottom: solid 2px #969696;
+}
+
+#joinBtn {
+    background: #e0e0e0;
+    display: inline-block;
+    margin: 0;
+    height: 23px;
+    width: 165px;
+    font-family: sans-serif;
+    font-size: 18px;
+    box-shadow: none;
+    border-radius: none;
+    padding: 10px;
+    margin: 3px;
+    border-radius: 5px;
+
+}
+
+
+
+/*----- Game Content -----*/
 #gameArea {
     width: 100vw;
     height: 100vh;
     background-color: #141421;
     background-image: url('images/starsBg.png');
+    position: relative;
+    z-index: -1;
 }
 
 
@@ -21,60 +135,89 @@ body {
 }
 
 /*Green Ships*/
-.shipG1 {
+.shipGreen1 {
     background: url(images/ships.PNG) 0 0;
 }
 
-.shipG2 {
+.shipGreen2 {
     background: url(images/ships.PNG) -48px 0;
 }
 
-.shipG3 {
+.shipGreen3 {
     background: url(images/ships.PNG) -96px 0;
 }
 
-.shipG4 {
+.shipGreen4 {
     background: url(images/ships.PNG) -144px 0;
 }
 
-.shipG5 {
+.shipGreen5 {
     background: url(images/ships.PNG) -192px 0;
 }
 
-.shipG6 {
+.shipGreen6 {
     background: url(images/ships.PNG) -240px 0;
 }
 
-.shipG7 {
+.shipGreen7 {
     background: url(images/ships.PNG) -288px 0;
 }
 
 
 /*Red Ships*/
-.shipR1 {
+.shipRed1 {
     background: url(images/ships.PNG) 0 -48px;
 }
 
-.shipR2 {
+.shipRed2 {
     background: url(images/ships.PNG) -48px -48px;
 }
 
-.shipR3 {
+.shipRed3 {
     background: url(images/ships.PNG) -96px -48px;
 }
 
-.shipR4 {
+.shipRed4 {
     background: url(images/ships.PNG) -144px -48px;
 }
 
-.shipR5 {
+.shipRed5 {
     background: url(images/ships.PNG) -192px -48px;
 }
 
-.shipR6 {
+.shipRed6 {
     background: url(images/ships.PNG) -240px -48px;
 }
 
-.shipR7 {
+.shipRed7 {
     background: url(images/ships.PNG) -288px -48px;
+}
+
+/*Gold Ships*/
+.shipGold1 {
+    background: url(images/ships.PNG) 0 -96px;
+}
+
+.shipGold2 {
+    background: url(images/ships.PNG) -48px -96px;
+}
+
+.shipGold3 {
+    background: url(images/ships.PNG) -96px -96px;
+}
+
+.shipGold4 {
+    background: url(images/ships.PNG) -144px -96px;
+}
+
+.shipGold5 {
+    background: url(images/ships.PNG) -192px -96px;
+}
+
+.shipGold6 {
+    background: url(images/ships.PNG) -240px -96px;
+}
+
+.shipGold7 {
+    background: url(images/ships.PNG) -288px -96px;
 }
