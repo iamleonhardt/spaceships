@@ -10,6 +10,7 @@ console.log('Grand Space Station is in orbit (server is running)');
 
 var socketList = {};
 var shipList = {};
+var bulletList = {};
 
 var initPack = {
     ships: {},
@@ -25,15 +26,36 @@ function getRanNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function Entity() {
+function Bullet(angle, x, y) {
     var self = {
-        x: 0,
-        y: 0,
+        x: x,
+        y: y,
+        speed:200,
+        rotation: angle,
+        id: Math.random(),
         speedX: 0,
-        speedY: 0,
-        id: ''
+        speedY: 0
     }
 
+    self.get_radians = function (degrees) {
+        return (Math.PI / 180) * degrees;
+    }
+
+    self.get_speeds = function () {
+        var temp_angle = self.rotation + 270;
+        var delta_y = Math.sin(self.get_radians(temp_angle)) * self.speed;
+        var delta_x = Math.cos(self.get_radians(temp_angle)) * self.speed;
+        self.speedY = delta_y;
+        self.speedX = delta_x
+    }
+
+    self.getUpdatePack = function () {
+        return {
+            id: self.id,
+            x: self.x,
+            y: self.y,
+        }
+    }
     self.update = function () {
         // console.log('inner update fired');
         self.updatePosition();
@@ -43,32 +65,60 @@ function Entity() {
     self.updatePosition = function () {
         self.x += self.speedX;
         self.y += self.speedY;
-    }
+    } 
+
+    self.get_speeds();
+
+    setTimeout(function(){
+        delete bulletList[self.id];
+    }, 3000)
 
     return self;
 
 }
 
-function Bullet() {
+Bullet.update = function () {
+    // console.log('outer update fired');
+    var updatePack = [];
 
+    for (var i in bulletList) {
+        var shot = bulletList[i];
+        shot.update();
+        updatePack.push(shot.getUpdatePack());
+    }
+    return updatePack;
 }
 
+
+// function Bullet(angle, x, y) {
+//     var self = new Entity();
+//     self.rotation = angle;
+//     self.x = x;
+//     self.y = y;
+// }
+
 function Ship(socket) {
-    var self = new Entity();
-    self.x = getRanNum(100, 500);
-    self.y = getRanNum(100, 500);
-    self.bullets = 30;
-    self.speed = 1;
-    self.acceleration = 1;
-    self.rotation = 0;
-    self.rotationSpeed = 15;
-    self.id = socket.id;
-    self.shipColor = 'white';
-    self.maxSpeed = 20;
-    self.pressingRight = false;
-    self.pressingLeft = false;
-    self.pressingUp = false;
-    self.pressingDown = false;
+    var self = {
+        x: getRanNum(100, 500),
+        y: getRanNum(100, 500),
+        bullets: 30,
+        speed: 1,
+        acceleration: 1,
+        rotation: 0,
+        rotationSpeed: 15,
+        id: socket.id,
+        shipColor: 'white',
+        maxSpeed: 20,
+        pressingRight: false,
+        pressingLeft: false,
+        pressingUp: false,
+        pressingDown: false,
+        pressingAttack: false,
+    }
+
+    self.get_radians = function (degrees) {
+        return (Math.PI / 180) * degrees;
+    }
 
 
     // Update will contain all things that get updated
@@ -91,13 +141,25 @@ function Ship(socket) {
         if (self.pressingRight) {
             self.rotation += self.rotationSpeed;
         }
+        if (self.pressingAttack) {
+            self.shoot_bullet();
+        }
     }
 
     //i used some of dans crazy movement ideas
-    self.get_radians = function (degrees) {
-        return (Math.PI / 180) * degrees;
-    }
+    // self.get_radians = function (degrees) {
+    //     return (Math.PI / 180) * degrees;
+    // }
     //this get speed function needs a little redoing
+    self.shoot_bullet = function(){
+        if (self.bullets){
+            var b = new Bullet(self.rotation, self.x, self.y);
+            console.log(b.id)
+            bulletList[b.id] = b;
+            self.bullets--;
+        }
+        
+    }
     self.get_speed = function () {
         return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
     }
@@ -201,6 +263,9 @@ io.sockets.on('connection', function (socket) {
         else if (data.inputId === 'right') {
             shipList[socket.id].pressingRight = data.state;
         }
+        else if (data.inputId === 'space') {
+            shipList[socket.id].pressingAttack = data.state;
+        }
     })
 
     socket.on('disconnect', function () {
@@ -214,8 +279,8 @@ io.sockets.on('connection', function (socket) {
 // Heartbeat - currently 25 fps
 setInterval(function () {
     var updatePack = {
-        ships: Ship.update()
-        // bullets: Bullet.update()
+        ships: Ship.update(),
+        bullets: Bullet.update()
     };
 
     // console.log(Object.keys(shipList));
