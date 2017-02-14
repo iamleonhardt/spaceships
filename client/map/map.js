@@ -30,6 +30,9 @@ function GameMap(){
 			console.error('no map loaded');
 		}
 		this.domElement = $("<div>",options);
-		this.domElement.append(this.mapData);
+		for(var i=0; i<this.mapData; i++){
+			this.domElement.append(this.mapData[i].svg);	
+		}
+		
 	}
 }
