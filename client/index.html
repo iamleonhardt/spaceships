@@ -10,62 +10,89 @@
 <div id="gameArea"></div>
 
 <script>
-
     var game;
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         game.init('#gameArea');
     });
 
-    function getRanNum(min, max){
+    function getRanNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
     var socket = io();
 
     // Init - When new stuff created, contains all the data
-    socket.on('init', function(initPack){
-        console.log('initPack in socket init is : ', initPack);
-        for(var i in initPack.ships){
-            game.makeShip(initPack.ships[i]);
-        }
-    });
 
+    socket.on('init', function (initPack) {
+        var shipExists = false;
+
+        // Check if shipList is empty, if so fill it with ships
+        if ($.isEmptyObject(game.shipList)) {
+            for (var i in initPack.ships) {
+                console.log('putting together new ship');
+                game.makeShip(initPack.ships[i]);
+            }
+            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+        }
+        else {
+            var objKeys = Object.keys(game.shipList);
+            for (var i in initPack.ships) {
+                for (var j in objKeys) {
+                    if (initPack.ships[i].id == objKeys[j]) {
+                        shipExists = true;
+                    }
+                }
+                if (!shipExists) {
+                    console.log('no matches found, lets build a ship');
+                    game.makeShip(initPack.ships[i]);
+                }
+                shipExists = false;
+            }
+        }
+    }
+    )
 
     // Update - Contains the difference when things change
-    socket.on('update', function(data){
-//        console.log('update triggered and data is : ', data);
+    socket.on('update', function (data) {
+        //        console.log('update triggered and data is : ', data);
 
         // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
-        for(var i in data.ships){
+        for (var i in data.ships) {
 
             // Compare sent ships to client shipList
             var packShip = data.ships[i];
             var ship = game.shipList[packShip.id];
 
             // look for de-sync make sure player exists properly
-            if(ship){
-                if(packShip.x !== undefined){
+            if (ship) {
+                if (packShip.x !== undefined) {
                     ship.x = packShip.x;
                 }
-                if(packShip.y !== undefined){
+                if (packShip.y !== undefined) {
                     ship.y = packShip.y;
+                }
+                if (packShip.rotation !== undefined) {
+                    ship.rotation = packShip.rotation;
                 }
                 ship.domElem.css({
                     left: ship.x + 'px',
-                    top: ship.y + 'px'
+                    top: ship.y + 'px',
+                    'transform': 'rotateZ(' + ship.rotation + 'deg)'
                 });
             }
         }
     });
 
     // Remove - When things are removed
-    socket.on('remove', function(data){
-//        console.log('remove data is ', data);
+
+    socket.on('remove', function (data) {
+        // console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
-        for(var i in data.ships){
+        for (var i in data.ships) {
             game.shipList[data.ships[i]].shipDie();
-//            delete game.shipList[data.ships[i]];
+            delete game.shipList[data.ships[i]];
+            console.log('after delete game.shiplist is : ', game.shipList);
 
         }
     });
@@ -75,14 +102,46 @@
         for(var i in game.shipList){
             // update position
             var ship = game.shipList[i];
-//            console.log('ship is : ', ship);
+            //    console.log('ship is : ', ship);
             ship.domElem.css({
                 left: ship.x + 'px',
-                top: ship.y + 'px'
+                top: ship.y + 'px',
+                'transform': 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
     }, 40);
 
     game = new GameController(socket);
+
+    //rewritten movement controls are more fluid
+    $('body').on('keypress', function (e) {
+        if (e.key === 'w') {
+            socket.emit('keyPress', { inputId: 'up', state: true });
+        }
+        else if (e.key === 's') {
+            socket.emit('keyPress', { inputId: 'down', state: true });
+        }
+        else if (e.key === 'a') {
+            socket.emit('keyPress', { inputId: 'left', state: true });
+        }
+        else if (e.key === 'd') {
+            socket.emit('keyPress', { inputId: 'right', state: true });
+        }
+        
+    }).on('keyup', function (e) {
+        if (e.key === 'w') {
+            socket.emit('keyPress', { inputId: 'up', state: false });
+        }
+        else if (e.key === 's') {
+            socket.emit('keyPress', { inputId: 'down', state: false });
+        }
+        else if (e.key === 'a') {
+            socket.emit('keyPress', { inputId: 'left', state: false });
+        }
+        else if (e.key === 'd') {
+            socket.emit('keyPress', { inputId: 'right', state: false });
+        }
+    
+    })
 
 </script>
