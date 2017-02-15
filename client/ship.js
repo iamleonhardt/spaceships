@@ -6,6 +6,7 @@ function Ship(initPack) {
 
     this.width = 30;
     this.height = 30;
+    this.shipSprite = 'shipR' + getRanNum(1,7);
     this.domElem = null;
 
 
@@ -20,7 +21,7 @@ function Ship(initPack) {
     this.createDomElem = function () {
         this.domElem = $('<div>', {
             id: this.id,
-            class: 'ship',
+            class: 'ship ' + this.shipSprite,
             css: {
                 left: self.x,
                 top: self.y,
