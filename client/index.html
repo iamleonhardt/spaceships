@@ -38,12 +38,17 @@
         }
         else {
             var objKeys = Object.keys(game.shipList);
+            // console.log(objKeys.includes(initPack.ships[i].id.toString()));
+
             for (var i in initPack.ships) {
-                for (var j in objKeys) {
-                    if (initPack.ships[i].id == objKeys[j]) {
-                        shipExists = true;
-                    }
+                if (objKeys.includes(initPack.ships[i].id.toString())) {
+                    shipExists = true;
                 }
+                // for (var j in objKeys) {
+                // if (initPack.ships[i].id == objKeys[j]) {
+                // shipExists = true;
+                // }
+                // }
                 if (!shipExists) {
                     console.log('no matches found, lets build a ship');
                     game.makeShip(initPack.ships[i]);
@@ -83,15 +88,15 @@
             }
         }
 
+        //for each bullet in the datapack, if its not in the bulletlist, create the bullet, else update the position
         for (var i in data.bullets) {
-            // i need to redo the bullet creation/update section
             var packBullet = data.bullets[i];
             var bulletId = packBullet.id.toString();
             var shotList = Object.keys(game.bulletList);
 
             if (!shotList.includes(bulletId)) {
                 game.createBullet(packBullet)
-                
+
             } else {
                 var shot = game.bulletList[bulletId];
                 shot.x = packBullet.x;
@@ -105,7 +110,6 @@
     });
 
     // Remove - When things are removed
-
     socket.on('remove', function (data) {
         // console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
@@ -129,16 +133,6 @@
                 'transform': 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
-
-        for (var i in game.bulletList) {
-            // update position
-            var bullet = game.bulletList[i];
-            //    console.log('ship is : ', ship);
-            bullet.domElem.css({
-                left: bullet.x + 'px',
-                top: bullet.y + 'px'
-            });
-        }
     }, 40);
 
     game = new GameController(socket);
@@ -159,10 +153,7 @@
             socket.emit('keyPress', { inputId: 'right', state: true });
         }
         else if (e.keyCode === 32) {
-            // socket.emit('keyPress', { inputId: 'space', state: true });
-            // game.shipList[selfId].createBullet();
             socket.emit('keyPress', { inputId: 'space', state: true });
-
         }
 
     }).on('keyup', function (e) {

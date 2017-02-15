@@ -31,7 +31,7 @@ function Bullet(angle, x, y, parent) {
         x: x,
         y: y,
         parent: parent,
-        speed:20,
+        speed: 20,
         rotation: angle,
         id: Math.random(),
         speedX: 0,
@@ -67,11 +67,11 @@ function Bullet(angle, x, y, parent) {
     self.updatePosition = function () {
         self.x += self.speedX;
         self.y += self.speedY;
-    } 
+    }
 
     self.get_speeds();
 
-    setTimeout(function(){
+    setTimeout(function () {
         delete bulletList[self.id];
     }, 1000)
 
@@ -127,7 +127,7 @@ function Ship(socket) {
             self.move_ship();
         }
         if (self.pressingDown) {
-            console.log('backpress');
+            self.move_ship('back');
         }
         if (self.pressingLeft) {
             self.rotation -= self.rotationSpeed;
@@ -145,25 +145,29 @@ function Ship(socket) {
     //     return (Math.PI / 180) * degrees;
     // }
     //this get speed function needs a little redoing
-    self.shoot_bullet = function(){
-        if (self.bullets){
+    self.shoot_bullet = function () {
+        if (self.bullets) {
             var b = new Bullet(self.rotation, self.x, self.y, self.id);
             console.log(b.id)
             bulletList[b.id] = b;
             self.bullets--;
         }
-        
     }
     self.get_speed = function () {
         return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
     }
-    self.move_ship = function () {
+    self.move_ship = function (back) {
         var temp_angle = self.rotation + 270;
         var speed = self.get_speed();
         var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
         var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
-        self.x += delta_x;
-        self.y += delta_y;
+        if (back) {
+            self.x -= delta_x;
+            self.y -= delta_y;
+        } else {
+            self.x += delta_x;
+            self.y += delta_y;
+        }
     }
 
     // Gets all of the game data to send when a new player joins
