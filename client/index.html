@@ -82,12 +82,26 @@
                 });
             }
         }
-            console.log(game.bulletList);
+            // console.log(game.bulletList);
             for (var i in data.bullets) {
 
             // Compare sent ships to client shipList
             var packBullet = data.bullets[i];
-            var shot = game.createBullet(data.bullets[i])
+            var shotList = Object.keys(game.bulletList);
+            if (shotList.includes(packBullet.id)){
+                var shot = game.bulletList[packBullet.id];
+                shot.x = packBullet.x;
+                shot.y = packBullet.y;
+                shot.domElem.css({
+                    left: shot.x + 'px',
+                    top: shot.y + 'px'
+                })
+            }
+            else{
+                var shot = game.createBullet(data.bullets[i])
+            }
+            // console.log(shotList);
+            
             
 
 

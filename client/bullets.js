@@ -42,7 +42,7 @@ function Bullet(data){
     setTimeout(function(){
         delete game.bulletList[self.id];
         self.bulletDie();
-    }, 3000)
+    }, 1000)
 
     this.get_radians = function (degrees) {
         return (Math.PI / 180) * degrees;

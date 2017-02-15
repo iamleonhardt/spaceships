@@ -31,7 +31,7 @@ function Bullet(angle, x, y, parent) {
         x: x,
         y: y,
         parent: parent,
-        speed:200,
+        speed:50,
         rotation: angle,
         id: Math.random(),
         speedX: 0,
@@ -73,7 +73,7 @@ function Bullet(angle, x, y, parent) {
 
     setTimeout(function(){
         delete bulletList[self.id];
-    }, 3000)
+    }, 1000)
 
     return self;
 
