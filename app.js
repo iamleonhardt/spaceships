@@ -27,6 +27,7 @@ function getRanNum(min, max) {
 }
 
 function Bullet(angle, x, y, parent) {
+    //bullets arent firing from the center of the ship
     var self = {
         x: x,
         y: y,
@@ -141,10 +142,6 @@ function Ship(socket) {
     }
 
     //i used some of dans crazy movement ideas
-    // self.get_radians = function (degrees) {
-    //     return (Math.PI / 180) * degrees;
-    // }
-    //this get speed function needs a little redoing
     self.shoot_bullet = function () {
         if (self.bullets) {
             var b = new Bullet(self.rotation, self.x, self.y, self.id);
@@ -153,6 +150,7 @@ function Ship(socket) {
             self.bullets--;
         }
     }
+    //this needs a touch up
     self.get_speed = function () {
         return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
     }
