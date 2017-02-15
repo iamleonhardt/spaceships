@@ -3,15 +3,17 @@ function Bullet(data){
     this.id = data.id;
     this.parent = 0;
     this.domElem = null;
+    this.x = data.x;
+    this.y = data.y;
 
 
     this.createDomElem = function () {
         this.domElem = $('<div>', {
-            id: this.id,
+            id: self.id,
             class: 'bullet',
             css: {
-                left: data.x,
-                top: data.y,
+                left: self.x,
+                top: self.y,
                 'transition-duration': 0.1 + 's',
                 height: 1 + 'px',
                 width: 1 + 'px'
@@ -21,28 +23,17 @@ function Bullet(data){
         return this.domElem;
     };
 
-    // this.shootBullet = function () {
-    //     var temp_angle = self.trajectory + 280;
-    //     var delta_x = Math.cos(self.get_radians(temp_angle)) * self.speed;
-    //     var delta_y = Math.sin(self.get_radians(temp_angle)) * self.speed;
-    //     console.log()
-    //     // self.x += delta_x;
-    //     // self.y += delta_y;
-    //     self.domElem.css({
-    //         top : '+='+delta_y+'px',
-    //         left : '+='+delta_x+'px'
-    //     })
-    // }
     this.bulletDie = function () {
-        console.log('removing bullet');
+        // console.log('removing bullet');
         $(this.domElem).remove();
 
     }
 
-    // setTimeout(function(){
-    //     delete game.bulletList[self.id];
-    //     self.bulletDie();
-    // }, 1000)
+    //self death built into the bullet
+    setTimeout(function(){
+        delete game.bulletList[self.id];
+        self.bulletDie();
+    }, 1000)
 
     this.get_radians = function (degrees) {
         return (Math.PI / 180) * degrees;

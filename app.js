@@ -31,7 +31,7 @@ function Bullet(angle, x, y, parent) {
         x: x,
         y: y,
         parent: parent,
-        speed:50,
+        speed:20,
         rotation: angle,
         id: Math.random(),
         speedX: 0,
@@ -90,14 +90,6 @@ Bullet.update = function () {
     }
     return updatePack;
 }
-
-
-// function Bullet(angle, x, y) {
-//     var self = new Entity();
-//     self.rotation = angle;
-//     self.x = x;
-//     self.y = y;
-// }
 
 function Ship(socket) {
     var self = {
@@ -247,9 +239,9 @@ io.sockets.on('connection', function (socket) {
 
     Ship.onConnect(socket);
 
-    socket.on('askForId', function () {
-        socket.emit('answerForId', { key: socket.id });
-    })
+    // socket.on('askForId', function () {
+    //     socket.emit('answerForId', { key: socket.id });
+    // })
 
     // Keypress event used to handle movement and keypresses
     socket.on('keyPress', function (data) {
