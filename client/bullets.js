@@ -1,19 +1,17 @@
-function Bullet(parent){
+function Bullet(data){
     var self = this;
-    this.id = Math.random();
-    this.parent = parent;
+    this.id = data.id;
+    this.parent = 0;
     this.domElem = null;
 
-    this.speed = 50;
-    this.trajectory = parent.rotation;
 
     this.createDomElem = function () {
         this.domElem = $('<div>', {
             id: this.id,
             class: 'bullet',
             css: {
-                left: parent.x,
-                top: parent.y,
+                left: data.x,
+                top: data.y,
                 'transition-duration': 0.1 + 's',
                 height: 1 + 'px',
                 width: 1 + 'px'
@@ -35,6 +33,16 @@ function Bullet(parent){
     //         left : '+='+delta_x+'px'
     //     })
     // }
+    this.bulletDie = function () {
+        console.log('removing bullet');
+        $(this.domElem).remove();
+
+    }
+
+    setTimeout(function(){
+        delete game.bulletList[self.id];
+        self.bulletDie();
+    }, 3000)
 
     this.get_radians = function (degrees) {
         return (Math.PI / 180) * degrees;
@@ -42,8 +50,4 @@ function Bullet(parent){
 
 }
 
-    this.bulletDie = function () {
-        console.log('destroying ship... kapow');
-        $(this.domElem).remove();
-
-    }
+    

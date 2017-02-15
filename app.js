@@ -26,10 +26,11 @@ function getRanNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function Bullet(angle, x, y) {
+function Bullet(angle, x, y, parent) {
     var self = {
         x: x,
         y: y,
+        parent: parent,
         speed:200,
         rotation: angle,
         id: Math.random(),
@@ -54,6 +55,7 @@ function Bullet(angle, x, y) {
             id: self.id,
             x: self.x,
             y: self.y,
+            parent: self.parent
         }
     }
     self.update = function () {
@@ -153,7 +155,7 @@ function Ship(socket) {
     //this get speed function needs a little redoing
     self.shoot_bullet = function(){
         if (self.bullets){
-            var b = new Bullet(self.rotation, self.x, self.y);
+            var b = new Bullet(self.rotation, self.x, self.y, self.id);
             console.log(b.id)
             bulletList[b.id] = b;
             self.bullets--;

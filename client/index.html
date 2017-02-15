@@ -82,6 +82,34 @@
                 });
             }
         }
+            console.log(game.bulletList);
+            for (var i in data.bullets) {
+
+            // Compare sent ships to client shipList
+            var packBullet = data.bullets[i];
+            var shot = game.createBullet(data.bullets[i])
+            
+
+
+
+            // look for de-sync make sure player exists properly
+            // if (ship) {
+            //     if (packShip.x !== undefined) {
+            //         ship.x = packShip.x;
+            //     }
+            //     if (packShip.y !== undefined) {
+            //         ship.y = packShip.y;
+            //     }
+            //     if (packShip.rotation !== undefined) {
+            //         ship.rotation = packShip.rotation;
+            //     }
+            //     ship.domElem.css({
+            //         left: ship.x + 'px',
+            //         top: ship.y + 'px',
+            //         'transform': 'rotateZ(' + ship.rotation + 'deg)'
+            //     });
+            // }
+        }
     });
 
     // Remove - When things are removed

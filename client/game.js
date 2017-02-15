@@ -17,6 +17,12 @@ function GameController(socket) {
         this.shipList[initPack.id] = ship;
         // game.shipList[initPack.id] = this.shipObj;
     }
+    this.createBullet = function(data){
+            var shot = new Bullet(data);
+            var bang = shot.createDomElem();
+            this.gameArea.append(bang);
+            this.bulletList[shot.id] = shot;                        
+    }
     this.instantiateMap = function (mapLoadedHandler, options) {
         if (options === undefined) {
             options = { id: 'mapArea', class: 'map' };

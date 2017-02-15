@@ -34,21 +34,6 @@ function Ship(initPack) {
         return this.domElem;
     };
 
-    this.shootBullet = function(shot){
-        
-    }
-
-    this.createBullet = function(){
-        if (self.bullets > 0){
-            var shot = new Bullet(game.shipList[selfId]);
-            var bang = shot.createDomElem();
-            game.gameArea.append(bang);
-            game.bulletList[shot.id] = shot;
-            self.shootBullet(shot);
-                        
-        }
-    }
-
     this.shipDie = function () {
         console.log('destroying ship... kapow');
         $(this.domElem).remove();
