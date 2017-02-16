@@ -50,6 +50,9 @@ function Bullet(angle, x, y, parent) {
         self.speedY = delta_y;
         self.speedX = delta_x
     }
+    self.getDistance = function (pt) {
+        return Math.sqrt(Math.pow(self.x - pt.x, 2) + Math.pow(self.y - pt.y, 2));
+    }
 
     self.getUpdatePack = function () {
         return {
@@ -62,6 +65,13 @@ function Bullet(angle, x, y, parent) {
     self.update = function () {
         // console.log('inner update fired');
         self.updatePosition();
+        for(var i in shipList){
+            var p = shipList[i]
+            if(self.getDistance(p) < 32 && self.parent !== p.id){
+                //remove health or something like that
+                self.toRemove = true;
+            }
+        }
     }
 
     // Updates the position
@@ -87,7 +97,11 @@ Bullet.update = function () {
     for (var i in bulletList) {
         var shot = bulletList[i];
         shot.update();
-        updatePack.push(shot.getUpdatePack());
+        if (shot.toRemove){
+            delete shot;
+        }else{
+            updatePack.push(shot.getUpdatePack());
+        }
     }
     return updatePack;
 }
@@ -103,7 +117,7 @@ function Ship(socket) {
         rotationSpeed: 15,
         id: socket.id,
         shipColor: 'white',
-        maxSpeed: 20,
+        maxSpeed: 15,
         pressingRight: false,
         pressingLeft: false,
         pressingUp: false,
