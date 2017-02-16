@@ -117,8 +117,13 @@
             game.shipList[data.ships[i]].shipDie();
             delete game.shipList[data.ships[i]];
             console.log('after delete game.shiplist is : ', game.shipList);
-
         }
+        // console.log(data.bullets)
+        // for (var i in data.bullets) {
+        //     game.bulletList[data.bullets[i]].bulletDie();
+        //     delete game.bulletList[data.bullets[i]];
+        //     console.log('removing bullet: ', game.bulletList);
+        // }
     });
 
     setInterval(function () {

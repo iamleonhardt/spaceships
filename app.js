@@ -13,13 +13,13 @@ var shipList = {};
 var bulletList = {};
 
 var initPack = {
-    ships: {},
-    bullets: {}
+    ships: [],
+    bullets: []
 };
 
 var removePack = {
-    ships: {},
-    bullets: {}
+    ships: [],
+    bullets: []
 };
 
 function getRanNum(min, max) {
@@ -31,6 +31,7 @@ function Bullet(angle, x, y, parent) {
     var self = {
         x: x,
         y: y,
+        toRemove: false,
         parent: parent,
         speed: 20,
         rotation: angle,
@@ -67,7 +68,7 @@ function Bullet(angle, x, y, parent) {
         self.updatePosition();
         for(var i in shipList){
             var p = shipList[i]
-            if(self.getDistance(p) < 32 && self.parent !== p.id){
+            if(self.getDistance(p) < 45 && self.parent !== p.id){
                 //remove health or something like that
                 self.toRemove = true;
             }
@@ -98,6 +99,7 @@ Bullet.update = function () {
         var shot = bulletList[i];
         shot.update();
         if (shot.toRemove){
+            // removePack.bullets.push(shot.id);
             delete shot;
         }else{
             updatePack.push(shot.getUpdatePack());
