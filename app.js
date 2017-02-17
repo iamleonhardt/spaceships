@@ -127,6 +127,18 @@ function Ship(socket) {
         pressingAttack: false,
     }
 
+    setInterval(function () {
+        self.bullet_recharge();
+    }, 1000)
+
+    self.bullet_recharge = function(){
+        if (self.bullets < 30){
+            self.bullets++
+        }else{
+            return;
+        }
+    }
+
     self.get_radians = function (degrees) {
         return (Math.PI / 180) * degrees;
     }
