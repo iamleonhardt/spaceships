@@ -33,7 +33,7 @@ function Bullet(angle, x, y, parent) {
         y: y,
         toRemove: false,
         parent: parent,
-        speed: 20,
+        speed: 30,
         rotation: angle,
         id: Math.random(),
         speedX: 0,
@@ -119,7 +119,7 @@ function Ship(socket) {
         rotationSpeed: 15,
         id: socket.id,
         shipColor: 'white',
-        maxSpeed: 15,
+        maxSpeed: 25,
         pressingRight: false,
         pressingLeft: false,
         pressingUp: false,
@@ -168,6 +168,9 @@ function Ship(socket) {
         if (self.pressingAttack) {
             self.shoot_bullet();
         }
+        if (!self.pressingUp && !self.pressingDown){
+            self.acceleration > 2 ? self.acceleration -= 2 : self.acceleration = 0;
+        }
     }
 
     //i used some of dans crazy movement ideas
@@ -181,7 +184,12 @@ function Ship(socket) {
     }
     //this needs a touch up
     self.get_speed = function () {
-        return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
+        if(self.speed + self.acceleration + 1 <= self.maxSpeed){
+            return self.speed + ++self.acceleration
+        }else{
+            return self.maxSpeed
+        }
+        // return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
     }
     self.move_ship = function (back) {
         var temp_angle = self.rotation + 270;
