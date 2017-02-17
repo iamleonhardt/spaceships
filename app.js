@@ -66,9 +66,9 @@ function Bullet(angle, x, y, parent) {
     self.update = function () {
         // console.log('inner update fired');
         self.updatePosition();
-        for(var i in shipList){
+        for (var i in shipList) {
             var p = shipList[i]
-            if(self.getDistance(p) < 45 && self.parent !== p.id){
+            if (self.getDistance(p) < 45 && self.parent !== p.id) {
                 //remove health or something like that
                 self.toRemove = true;
             }
@@ -98,10 +98,10 @@ Bullet.update = function () {
     for (var i in bulletList) {
         var shot = bulletList[i];
         shot.update();
-        if (shot.toRemove){
+        if (shot.toRemove) {
             // removePack.bullets.push(shot.id);
             delete shot;
-        }else{
+        } else {
             updatePack.push(shot.getUpdatePack());
         }
     }
@@ -127,14 +127,15 @@ function Ship(socket) {
         pressingAttack: false,
     }
 
+    //used to replenish bullets
     setInterval(function () {
         self.bullet_recharge();
     }, 1000)
 
-    self.bullet_recharge = function(){
-        if (self.bullets < 30){
+    self.bullet_recharge = function () {
+        if (self.bullets < 30) {
             self.bullets++
-        }else{
+        } else {
             return;
         }
     }

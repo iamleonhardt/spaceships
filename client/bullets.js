@@ -1,4 +1,4 @@
-function Bullet(data){
+function Bullet(data) {
     var self = this;
     this.id = data.id;
     this.parent = 0;
@@ -30,7 +30,7 @@ function Bullet(data){
     }
 
     //self death built into the bullet
-    setTimeout(function(){
+    setTimeout(function () {
         delete game.bulletList[self.id];
         self.bulletDie();
     }, 1000)
@@ -41,4 +41,3 @@ function Bullet(data){
 
 }
 
-    
