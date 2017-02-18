@@ -6,7 +6,8 @@ function Ship(initPack) {
 
     this.width = 30;
     this.height = 30;
-    this.shipSprite = 'shipR' + getRanNum(1, 7);
+    this.shipSprite = 'shipRed' + getRanNum(1,7);
+
     this.domElem = null;
 
 
