@@ -64,25 +64,26 @@
             }
 
             // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
-        }
-        else {
-            var objKeys = Object.keys(game.shipList);
-            // console.log(objKeys.includes(initPack.ships[i].id.toString()));
 
-            for (var i in initPack.ships) {
-                if (objKeys.includes(initPack.ships[i].id.toString())) {
-                    shipExists = true;
+            else {
+                var objKeys = Object.keys(game.shipList);
+                // console.log(objKeys.includes(initPack.ships[i].id.toString()));
+
+                for (var i in initPack.ships) {
+                    if (objKeys.includes(initPack.ships[i].id.toString())) {
+                        shipExists = true;
+                    }
+                    // for (var j in objKeys) {
+                    // if (initPack.ships[i].id == objKeys[j]) {
+                    // shipExists = true;
+                    // }
+                    // }
+                    if (!shipExists) {
+                        console.log('no matches found, lets build a ship');
+                        game.makeShip(initPack.ships[i]);
+                    }
+                    shipExists = false;
                 }
-                // for (var j in objKeys) {
-                // if (initPack.ships[i].id == objKeys[j]) {
-                // shipExists = true;
-                // }
-                // }
-                if (!shipExists) {
-                    console.log('no matches found, lets build a ship');
-                    game.makeShip(initPack.ships[i]);
-                }
-                shipExists = false;
             }
         }
     )
@@ -155,11 +156,11 @@
     });
 
 
-    setInterval(function(){
+    setInterval(function () {
         //console.log('shipList is : ', game.shipList);
-        for(var i in game.shipList){
+        for (var i in game.shipList) {
 
-          // update position
+            // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
             ship.domElem.css({
@@ -188,7 +189,7 @@
             socket.emit('keyPress', {inputId: 'right', state: true});
         }
         else if (e.keyCode === 32) {
-            socket.emit('keyPress', { inputId: 'space', state: true });
+            socket.emit('keyPress', {inputId: 'space', state: true});
         }
 
     }).on('keyup', function (e) {
@@ -205,7 +206,7 @@
             socket.emit('keyPress', {inputId: 'right', state: false});
         }
         else if (e.keyCode === 32) {
-            socket.emit('keyPress', { inputId: 'space', state: false });
+            socket.emit('keyPress', {inputId: 'space', state: false});
         }
     })
 
