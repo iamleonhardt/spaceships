@@ -2,10 +2,11 @@ function Ship(initPack) {
     var self = this;
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
+    this.bullets = initPack.bullets;
 
     this.width = 30;
     this.height = 30;
-    this.shipSprite = 'shipR' + getRanNum(1,7);
+    this.shipSprite = 'shipR' + getRanNum(1, 7);
     this.domElem = null;
 
 

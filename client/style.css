@@ -78,3 +78,7 @@ body {
 .shipR7 {
     background: url(images/ships.PNG) -288px -48px;
 }
+
+.bullet{
+    position: absolute;
+    border:2px solid red;
