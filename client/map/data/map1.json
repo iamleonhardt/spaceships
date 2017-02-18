@@ -1,8 +1,32 @@
 {
-  "meta": {
-    "name": "map1",
-    "author": "Dan",
-    "created": "2017-02-05"
-  },
-  "mapData": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"1070px\" height=\"520px\" viewBox=\"0 0  1070 520\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1070\" height=\"520\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"132 99 288 98 325 231 228 289 78 273 58 180\" fill=\"#545250\"/><polygon stroke=\"black\" id=\"e29_polygon\" style=\"stroke-width: 1px;\" points=\"708 184 801 212 912 300 844 408 628 415 581 239 463 136 566 66 663 79\" fill=\"#545250\"/><polygon stroke=\"black\" id=\"e58_polygon\" style=\"stroke-width: 1px;\" points=\"47 368 272 351 432 371 485.5 454 333 501 124 493 17 443\" fill=\"#545250\" /></svg>"
+	"meta": {
+		"name": "map1",
+		"author": "Dan",
+		"created": "2017-02-05"
+	},
+	"mapData": [{
+		"coords": {
+			"x": 20,
+			"y": 20
+		},
+		"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"427px\" height=\"520px\" old_viewBox=\"0 0 1070 520\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1070\" height=\"520\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"21 450 11 275 34 211 28 115 16 40 68 9 141 2 142 6 191 11 193 13 282 25 335 8 411 33 427 47 403 84 330 77 277 66 217 95 162 90 116 62 93 97 91 147 124 184 103 227 92 273 119 304 61 365 66 410 112 420 126 449 84 494 39 488\" fill=\"silver\"/></svg>"
+	}, {
+		"coords": {
+			"x": 400,
+			"y": 0
+		},
+		"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"1080px\" height=\"480px\" old_viewBox=\"0 0 1080 480\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1080\" height=\"480\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"243 126 368 63 383 26 423 29 433 26 462 10 492 39 549 34 550 35 551 41 576 60 576 62 631 75 636 77 699 85 746 76 786 117 829 133 831 133 847 145 846 160 846 194 846 200 842 200 840 200 815 189 810 193 789 229 789 234 814 249 816 256 816 261 808 281 793 285 770 297 765 342 796 375 784 394 778 399 695 426 669 461 601 465 499 461 497 460 481 413 500 377 538 374 542 377 570 359 571 358 624 366 627 367 633 367 633 351 632 340 638 332 642 331 648 283 656 283 650 240 640 239 608 237 582 180 553 171 547 171 540 171 532 174 532 202 531 207 536 210 537 212 540 213 548 219 558 230 561 243 565 248 569 251 570 267 571 274 571 282 564 289 549 293 546 296 546 310 476 312 457 342 447 342 438 344 433 373 433 376 392 394 363 383 362 417 323 406 306 376 305 373 287 322 287 315 324 254 332 222 328 219 321 213 317 213 298 201 281 203 277 203 258 194 244 168 229 157 216 125 232 114 242 115\" fill=\"gray\"/></svg>"
+	}, {
+		"coords": {
+			"x": 0,
+			"y": 600
+		},
+		"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"1080px\" height=\"480px\" viewBox=\"0 0 1080 480\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1080\" height=\"480\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"230 160 292 153 303 124 344 98.5 403 125 455.5 134.5 480.75 159.25 492.375 163.625 472 184 486 212 540 199 550 198 553 198 553 222 553 231 548 248 547 249 570 249 573 254 610 277 623 295 630 331 630 333 628 333 570 373 566 375 496 338 495 329 495 324 476 336 470 340 452 340 441 306 411 302 338 348 278 337 256 309 229 265 187 257 185 257 183 257 141 222 137 204 135 197 137 172 151 153 153 152 169 143 171 143\" fill=\"gray\" /></svg>"
+	}, {
+		"coords": {
+			"x": 68,
+			"y": 500
+		},
+		"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"1080px\" height=\"480px\" old_viewBox=\"0 0 1080 480\" preserveAspectRatio=\"xMidYMid meet\" ><rect id=\"svgEditorBackground\" x=\"0\" y=\"0\" width=\"1080\" height=\"480\" style=\"fill: none; stroke: none;\"/><polygon stroke=\"black\" id=\"e3_polygon\" style=\"stroke-width: 1px;\" points=\"435 17 423 53 462 50 462 52 491 78 520 105 523 137 511 149 511 151 519 164 523 174 543 180 553 182 565 180 588 160 594 144 629 138 653 104 656 104 666 100 704 100 709 103 710 98 751 96 760 96 760 102 764 122 810 125 815 127 834 148 857 147 887 164 934 176 954 176 962 264 962 266 1027 299 1025 344 1024 346 1013 354 1012 356 1012 362 1009 369 995 402 995 409 1000 437 1008 440 1040 452 1073 331 1073 323 1073 320 1069 236 1062 205 1061 186 1061 184 1052 180 1045 180 1042 177 1032 132 1033 107 1022 84 996 70 989 59 983 59 937 29 877 25 856 17 854 17 845 18 761 7 671 12 647 12 607 4 592 2 505 8 465 8\" fill=\"silver\"/></svg>"
+	}]
 }
