@@ -127,6 +127,7 @@ function Ship(data, socket) {
         // Shooting
         bullets: 10,
         pressingAttack: false,
+        canShoot: true,
         health: 50,
 
         // Movement
@@ -151,7 +152,7 @@ function Ship(data, socket) {
     }, 1000)
 
     self.bullet_recharge = function () {
-        if (self.bullets < 30) {
+        if (self.bullets < 10) {
             self.bullets++
         } else {
             return;
@@ -193,12 +194,14 @@ function Ship(data, socket) {
 
     //i used some of dans crazy movement ideas
     self.shoot_bullet = function () {
-        if (self.bullets) {
+        if (self.bullets && self.canShoot) {
             //create the bullet at the middle of the ship
             var b = new Bullet(self.rotation, self.x + self.width / 2, self.y + self.height / 2, self.id);
             console.log(b.id)
             bulletList[b.id] = b;
+            self.canShoot = false;
             self.bullets--;
+            setTimeout(function(){self.canShoot = true}, 500);
         }
     }
     //this needs a touch up
