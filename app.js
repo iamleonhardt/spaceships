@@ -126,7 +126,7 @@ function Ship(data, socket) {
         // Movement
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
-        speed: 1,
+        speed: 5,
         maxSpeed: 25,
         acceleration: 1,
         rotation: 0,
@@ -203,9 +203,9 @@ function Ship(data, socket) {
     }
     self.move_ship = function (back) {
         var temp_angle = self.rotation + 270;
-        var speed = self.get_speed();
-        var delta_x = Math.cos(self.get_radians(temp_angle)) * speed;
-        var delta_y = Math.sin(self.get_radians(temp_angle)) * speed;
+        // var speed = self.get_speed();
+        var delta_x = Math.cos(self.get_radians(temp_angle)) * self.speed;
+        var delta_y = Math.sin(self.get_radians(temp_angle)) * self.speed;
         if (back) {
             self.x -= delta_x;
             self.y -= delta_y;

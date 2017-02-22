@@ -30,7 +30,7 @@ function Ship(initPack) {
             css: {
                 left: self.x,
                 top: self.y,
-                'transition-duration': 0.1 + 's',
+                'transition-duration': 20 + 'ms',
                 // 'background-color': initPack.shipColor,
                 // width: self.width + 'px',
                 // height: self.height + 'px',
