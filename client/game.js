@@ -5,6 +5,7 @@ function GameController(socket) {
     this.mapController = null;
     this.selectedTeam = '';
     this.selectedShip = '';
+    this.pilotName = '';
 
     this.init = function (gameAreaSelector) {
         this.gameArea = $(gameAreaSelector);
@@ -13,13 +14,13 @@ function GameController(socket) {
 
     };
 
+    // Select Ship Menu
     this.addTeamSelectMenuClickHandlers = function(){
         $('#Red').click(self.teamSelected);
         $('#Green').click(self.teamSelected);
         $('#Gold').click(self.teamSelected);
 
         $('.shipChoice').click(this.shipSelected);
-
         $('#joinBtn').click(self.joinTheFightBtn);
     };
 
@@ -47,23 +48,38 @@ function GameController(socket) {
         $(this).addClass('selectedShip');
     };
 
+    this.pilotNameInput = function(){
+        self.pilotName = $('#pilotNameInput').val();
+        if(self.pilotName == ''){
+            self.pilotName = 'Drone';
+        }
+    };
+
     this.joinTheFightBtn = function(){
-        var pilotName = $('#pilotNameInput').val();
         if (self.selectedTeam == ''){
             $('#menuInstructions').text('Please Select a Team First');
         }else if (self.selectedShip == ''){
             $('#menuInstructions').text('Please Select a Ship First');
 
         }else{
-            // Make ship with (self.selectedTeam, self.selectedShip, pilotName)
-            if(pilotName == ''){
-                pilotName = 'Drone';
+            self.pilotNameInput();
+            var joinPack = {
+                pilotName: self.pilotName,
+                selectedTeam: self.selectedTeam,
+                selectedShip: self.selectedShip
             }
+            console.log('pilotName is : ', self.pilotName);
+            console.log('selectedTeam is : ', self.selectedTeam);
+            console.log('selectedShip is : ', self.selectedShip);
+            socket.emit('joinTheFight', joinPack);
             // Pass the info to the server to make the ship
             $('#chooseTeamDiv').hide();
         }
     };
 
+
+
+    // Make Ship
     this.makeShip = function (initPack) {
         // console.log('putting together new ship');
         var ship = new Ship(initPack);
@@ -90,14 +106,4 @@ function GameController(socket) {
         console.log('map is loaded');
         this.gameArea.append(mapElement);
     };
-
-    this.makeShip = function (initPack) {
-        // console.log('putting together new ship');
-        var ship = new Ship(initPack);
-        this.shipObj = ship;
-        var shipDomElem = this.shipObj.createDomElem();
-        this.gameArea.append(shipDomElem);
-        this.shipList[initPack.id] = ship;
-        // game.shipList[initPack.id] = this.shipObj;
-    }
 }
