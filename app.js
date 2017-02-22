@@ -275,6 +275,10 @@ io.sockets.on('connection', function (socket) {
     socketList[socket.id] = socket;
     Ship.onConnect(socket);
 
+    socket.on('askForId', function(){
+        socket.emit('answerForId', {id:socket.id});
+    })
+
     // Keypress event used to handle movement and keypresses
     socket.on('keyPress', function (data) {
         if (data.inputId === 'up') {
@@ -315,8 +319,8 @@ setInterval(function () {
         socket.emit('remove', removePack);
         socket.emit('init', initPack);
         socket.emit('update', updatePack);
-
     }
+
     initPack.ships = [];
     removePack.ships = [];
 

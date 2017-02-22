@@ -37,7 +37,7 @@
 
 <script>
     var game;
-    // var selfId;
+    var selfId;
 
     $(document).ready(function () {
         game.init('#gameArea');
@@ -155,6 +155,12 @@
         // }
     });
 
+    socket.emit('askForId', function(){});
+    socket.on('answerForId', function(data){
+        console.log(data.id)
+        selfId = data.id;
+    })
+
 
     setInterval(function () {
         //console.log('shipList is : ', game.shipList);
@@ -169,7 +175,12 @@
                 transform: 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
+
     }, 40);
+
+    setInterval(function(){
+        window.scrollTo(game.shipList[selfId].x-400, game.shipList[selfId].y-400);
+    }, 5);
 
     game = new GameController(socket);
 
