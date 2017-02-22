@@ -74,6 +74,10 @@ function GameController(socket) {
             socket.emit('joinTheFight', joinPack);
             // Pass the info to the server to make the ship
             $('#chooseTeamDiv').hide();
+            //used to follow the players ship around
+            setInterval(function(){
+                window.scrollTo(game.shipList[selfId].x-400, game.shipList[selfId].y-400);
+            }, 5);
         }
     };
 
