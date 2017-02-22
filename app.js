@@ -51,9 +51,7 @@ function Bullet(angle, x, y, parent) {
         self.speedY = delta_y;
         self.speedX = delta_x
     }
-    // self.getDistance = function (pt) {
-    //     return Math.sqrt(Math.pow(self.x - pt.x, 2) + Math.pow(self.y - pt.y, 2));
-    // }
+    
 
     self.getUpdatePack = function () {
         return {
@@ -68,16 +66,13 @@ function Bullet(angle, x, y, parent) {
         self.updatePosition();
         for (var i in shipList) {
             var ship = shipList[i]
-            // if (self.getDistance(p) < 45 && self.parent !== p.id) {
-            //     //remove health or something like that
-            //     self.toRemove = true;
-            // }
+            
             if (self.x > ship.x &&
                 self.x < ship.x + 48 &&
                 self.y > ship.y &&
                 self.y < ship.y + 48 && self.parent !== ship.id){
                     self.toRemove = true;
-                    console.log('hit');
+                    // console.log('hit');
                 }
         }
     }
