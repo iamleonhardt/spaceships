@@ -67,7 +67,7 @@ function Bullet(angle, x, y, parent) {
         for (var i in shipList) {
             var ship = shipList[i]
 
-            //if the bullet intersects with the ship, then remove set the bullet to remove and subtract some health
+            //if the bullet intersects with the ship, then set the bullet to remove and subtract some health
             if (self.x > ship.x &&
                 self.x < ship.x + ship.width &&
                 self.y > ship.y &&
@@ -186,14 +186,15 @@ function Ship(data, socket) {
         if (self.pressingAttack) {
             self.shoot_bullet();
         }
-        if (!self.pressingUp && !self.pressingDown) {
-            self.acceleration > 2 ? self.acceleration -= 2 : self.acceleration = 0;
-        }
+        // if (!self.pressingUp && !self.pressingDown) {
+        //     self.acceleration > 2 ? self.acceleration -= 2 : self.acceleration = 0;
+        // }
     }
 
     //i used some of dans crazy movement ideas
     self.shoot_bullet = function () {
         if (self.bullets) {
+            //create the bullet at the middle of the ship
             var b = new Bullet(self.rotation, self.x + self.width / 2, self.y + self.height / 2, self.id);
             console.log(b.id)
             bulletList[b.id] = b;
@@ -207,7 +208,6 @@ function Ship(data, socket) {
         } else {
             return self.maxSpeed
         }
-        // return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
     }
     self.move_ship = function (back) {
         var temp_angle = self.rotation + 270;
