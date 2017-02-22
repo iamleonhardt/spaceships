@@ -51,7 +51,7 @@ function Bullet(angle, x, y, parent) {
         self.speedY = delta_y;
         self.speedX = delta_x
     }
-    
+
 
     self.getUpdatePack = function () {
         return {
@@ -66,15 +66,17 @@ function Bullet(angle, x, y, parent) {
         self.updatePosition();
         for (var i in shipList) {
             var ship = shipList[i]
-            
+
+            //if the bullet intersects with the ship, then remove set the bullet to remove and subtract some health
             if (self.x > ship.x &&
                 self.x < ship.x + ship.width &&
                 self.y > ship.y &&
-                self.y < ship.y + ship.height && 
-                self.parent !== ship.id){
+                self.y < ship.y + ship.height &&
+                self.parent !== ship.id) {
                     self.toRemove = true;
-                    // console.log('hit');
-                }
+                    ship.health -= 5;
+                    // console.log(ship.health);
+            }
         }
     }
 
@@ -125,6 +127,7 @@ function Ship(data, socket) {
         // Shooting
         bullets: 10,
         pressingAttack: false,
+        health: 50,
 
         // Movement
         x: getRanNum(100, 500),
@@ -132,8 +135,8 @@ function Ship(data, socket) {
         speed: 5,
         maxSpeed: 25,
         acceleration: 1,
-        height:48,
-        width:48,
+        height: 48,
+        width: 48,
         rotation: 0,
         rotationSpeed: 15,
         pressingRight: false,
@@ -183,7 +186,7 @@ function Ship(data, socket) {
         if (self.pressingAttack) {
             self.shoot_bullet();
         }
-        if (!self.pressingUp && !self.pressingDown){
+        if (!self.pressingUp && !self.pressingDown) {
             self.acceleration > 2 ? self.acceleration -= 2 : self.acceleration = 0;
         }
     }
@@ -191,7 +194,7 @@ function Ship(data, socket) {
     //i used some of dans crazy movement ideas
     self.shoot_bullet = function () {
         if (self.bullets) {
-            var b = new Bullet(self.rotation, self.x + self.width/2 , self.y + self.height/2 , self.id);
+            var b = new Bullet(self.rotation, self.x + self.width / 2, self.y + self.height / 2, self.id);
             console.log(b.id)
             bulletList[b.id] = b;
             self.bullets--;
@@ -199,9 +202,9 @@ function Ship(data, socket) {
     }
     //this needs a touch up
     self.get_speed = function () {
-        if(self.speed + self.acceleration + 1 <= self.maxSpeed){
+        if (self.speed + self.acceleration + 1 <= self.maxSpeed) {
             return self.speed + ++self.acceleration
-        }else{
+        } else {
             return self.maxSpeed
         }
         // return self.speed + ++self.acceleration <= self.maxSpeed ? self.speed + ++self.acceleration : self.maxSpeed;
@@ -241,7 +244,8 @@ function Ship(data, socket) {
             x: self.x,
             y: self.y,
             bullets: self.bullets,
-            rotation: self.rotation
+            rotation: self.rotation,
+            health: self.health
         }
     }
 
@@ -292,14 +296,14 @@ io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
     socketList[socket.id] = socket;
 
-    socket.on('joinTheFight', function (data){
+    socket.on('joinTheFight', function (data) {
         console.log('Join the Fight! data is : ', data + ' and socket is : ', socket);
         Ship.onConnect(data, socket);
 
     })
 
-    socket.on('askForId', function(){
-        socket.emit('answerForId', {id:socket.id});
+    socket.on('askForId', function () {
+        socket.emit('answerForId', { id: socket.id });
     })
 
     // Keypress event used to handle movement and keypresses

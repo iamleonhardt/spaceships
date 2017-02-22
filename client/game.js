@@ -15,7 +15,7 @@ function GameController(socket) {
     };
 
     // Select Ship Menu
-    this.addTeamSelectMenuClickHandlers = function(){
+    this.addTeamSelectMenuClickHandlers = function () {
         $('#Red').click(self.teamSelected);
         $('#Green').click(self.teamSelected);
         $('#Gold').click(self.teamSelected);
@@ -39,8 +39,8 @@ function GameController(socket) {
         }
     };
 
-    this.shipSelected = function(){
-      //store ship choice
+    this.shipSelected = function () {
+        //store ship choice
         self.selectedShip = this.dataset.shipSprite;
         console.log('data is : ', this.dataset.shipSprite);
         console.log('click and this is : ', this);
@@ -48,20 +48,20 @@ function GameController(socket) {
         $(this).addClass('selectedShip');
     };
 
-    this.pilotNameInput = function(){
+    this.pilotNameInput = function () {
         self.pilotName = $('#pilotNameInput').val();
-        if(self.pilotName == ''){
+        if (self.pilotName == '') {
             self.pilotName = 'Drone';
         }
     };
 
-    this.joinTheFightBtn = function(){
-        if (self.selectedTeam == ''){
+    this.joinTheFightBtn = function () {
+        if (self.selectedTeam == '') {
             $('#menuInstructions').text('Please Select a Team First');
-        }else if (self.selectedShip == ''){
+        } else if (self.selectedShip == '') {
             $('#menuInstructions').text('Please Select a Ship First');
 
-        }else{
+        } else {
             self.pilotNameInput();
             var joinPack = {
                 pilotName: self.pilotName,
@@ -75,8 +75,8 @@ function GameController(socket) {
             // Pass the info to the server to make the ship
             $('#chooseTeamDiv').hide();
             //used to follow the players ship around
-            setInterval(function(){
-                window.scrollTo(game.shipList[selfId].x-400, game.shipList[selfId].y-400);
+            setInterval(function () {
+                window.scrollTo(game.shipList[selfId].x - 400, game.shipList[selfId].y - 400);
             }, 5);
         }
     };

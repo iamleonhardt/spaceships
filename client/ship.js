@@ -3,7 +3,7 @@ function Ship(initPack) {
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
     this.bullets = initPack.bullets;
-
+    this.health = 50;
     this.width = 30;
     this.height = 30;
     // this.shipSprite = 'shipRed' + getRanNum(1,7);
