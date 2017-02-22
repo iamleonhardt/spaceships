@@ -6,7 +6,11 @@ function Ship(initPack) {
 
     this.width = 30;
     this.height = 30;
-    this.shipSprite = 'shipRed' + getRanNum(1,7);
+    // this.shipSprite = 'shipRed' + getRanNum(1,7);
+    this.team = initPack.team;
+    this.shipSprite = initPack.ship;
+    console.log('selected ship is : ', initPack.ship);
+
 
     this.domElem = null;
 

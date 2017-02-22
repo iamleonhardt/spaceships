@@ -108,23 +108,33 @@ Bullet.update = function () {
     return updatePack;
 }
 
-function Ship(socket) {
+function Ship(data, socket) {
+    console.log('Ship data is : ', data);
     var self = {
+        //Ship Details
+        id: socket.id,
+        // shipColor: 'white',
+        team: data.selectedTeam,
+        ship: data.selectedShip,
+        pilotName: data.pilotName,
+
+
+        // Shooting
+        bullets: 10,
+        pressingAttack: false,
+
+        // Movement
         x: getRanNum(100, 500),
         y: getRanNum(100, 500),
-        bullets: 30,
         speed: 1,
+        maxSpeed: 25,
         acceleration: 1,
         rotation: 0,
         rotationSpeed: 15,
-        id: socket.id,
-        shipColor: 'white',
-        maxSpeed: 25,
         pressingRight: false,
         pressingLeft: false,
         pressingUp: false,
-        pressingDown: false,
-        pressingAttack: false,
+        pressingDown: false
     }
 
     //used to replenish bullets
@@ -212,7 +222,10 @@ function Ship(socket) {
             x: self.x,
             y: self.y,
             bullets: self.bullets,
-            shipColor: self.shipColor
+            // shipColor: self.shipColor
+            team: self.team,
+            ship: self.ship,
+            pilotName: self.pilotName
         }
     }
 
@@ -233,8 +246,8 @@ function Ship(socket) {
     return self;
 }
 
-Ship.onConnect = function (socket) {
-    var ship = Ship(socket);
+Ship.onConnect = function (data, socket) {
+    var ship = Ship(data, socket);
 
     initPack = {
         ships: Ship.getAllInitPack(),
@@ -273,7 +286,12 @@ Ship.update = function () {
 io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
     socketList[socket.id] = socket;
-    Ship.onConnect(socket);
+
+    socket.on('joinTheFight', function (data){
+        console.log('Join the Fight! data is : ', data + ' and socket is : ', socket);
+        Ship.onConnect(data, socket);
+
+    })
 
     socket.on('askForId', function(){
         socket.emit('answerForId', {id:socket.id});
