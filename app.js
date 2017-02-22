@@ -68,9 +68,10 @@ function Bullet(angle, x, y, parent) {
             var ship = shipList[i]
             
             if (self.x > ship.x &&
-                self.x < ship.x + 48 &&
+                self.x < ship.x + ship.width &&
                 self.y > ship.y &&
-                self.y < ship.y + 48 && self.parent !== ship.id){
+                self.y < ship.y + ship.height && 
+                self.parent !== ship.id){
                     self.toRemove = true;
                     // console.log('hit');
                 }
@@ -131,6 +132,8 @@ function Ship(data, socket) {
         speed: 5,
         maxSpeed: 25,
         acceleration: 1,
+        height:48,
+        width:48,
         rotation: 0,
         rotationSpeed: 15,
         pressingRight: false,
@@ -188,7 +191,7 @@ function Ship(data, socket) {
     //i used some of dans crazy movement ideas
     self.shoot_bullet = function () {
         if (self.bullets) {
-            var b = new Bullet(self.rotation, self.x, self.y, self.id);
+            var b = new Bullet(self.rotation, self.x + self.width/2 , self.y + self.height/2 , self.id);
             console.log(b.id)
             bulletList[b.id] = b;
             self.bullets--;
