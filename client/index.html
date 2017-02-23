@@ -41,6 +41,12 @@
 
     $(document).ready(function () {
         game.init('#gameArea');
+        $(document).keypress(function(e) {
+            console.log('e is : ', e);
+            if (e.which == 13) {
+                game.joinTheFightBtn();
+            }
+        })
     });
 
     function getRanNum(min, max) {
