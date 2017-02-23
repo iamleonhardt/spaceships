@@ -52,40 +52,40 @@
     // Init - When new stuff created, contains all the data
 
     socket.on('init', function (initPack) {
-        var shipExists = false;
+            var shipExists = false;
 
-        // Check if shipList is empty, if so fill it with ships
-        if ($.isEmptyObject(game.shipList)) {
-            for (var i in initPack.ships) {
-                console.log('putting together new ship');
-                game.makeShip(initPack.ships[i]);
-            }
-            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
-        }
-
-        // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
-
-        else {
-            var objKeys = Object.keys(game.shipList);
-            // console.log(objKeys.includes(initPack.ships[i].id.toString()));
-
-            for (var i in initPack.ships) {
-                if (objKeys.includes(initPack.ships[i].id.toString())) {
-                    shipExists = true;
-                }
-                // for (var j in objKeys) {
-                // if (initPack.ships[i].id == objKeys[j]) {
-                // shipExists = true;
-                // }
-                // }
-                if (!shipExists) {
-                    console.log('no matches found, lets build a ship');
+            // Check if shipList is empty, if so fill it with ships
+            if ($.isEmptyObject(game.shipList)) {
+                for (var i in initPack.ships) {
+                    console.log('putting together new ship');
                     game.makeShip(initPack.ships[i]);
                 }
-                shipExists = false;
+                // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+            }
+
+            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+
+            else {
+                var objKeys = Object.keys(game.shipList);
+                // console.log(objKeys.includes(initPack.ships[i].id.toString()));
+
+                for (var i in initPack.ships) {
+                    if (objKeys.includes(initPack.ships[i].id.toString())) {
+                        shipExists = true;
+                    }
+                    // for (var j in objKeys) {
+                    // if (initPack.ships[i].id == objKeys[j]) {
+                    // shipExists = true;
+                    // }
+                    // }
+                    if (!shipExists) {
+                        console.log('no matches found, lets build a ship');
+                        game.makeShip(initPack.ships[i]);
+                    }
+                    shipExists = false;
+                }
             }
         }
-    }
     )
 
     // Update - Contains the difference when things change
@@ -163,7 +163,8 @@
         // }
     });
 
-    socket.emit('askForId', function () { });
+    socket.emit('askForId', function () {
+    });
     socket.on('answerForId', function (data) {
         console.log(data.id)
         selfId = data.id;
@@ -186,45 +187,6 @@
 
     }, 40);
 
-
-
     game = new GameController(socket);
-
-    //rewritten movement controls are more fluid
-    $('body').on('keypress', function (e) {
-        // console.log(e.keyCode)
-        if (e.key === 'w') {
-            socket.emit('keyPress', { inputId: 'up', state: true });
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', { inputId: 'down', state: true });
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', { inputId: 'left', state: true });
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', { inputId: 'right', state: true });
-        }
-        else if (e.keyCode === 32) {
-            socket.emit('keyPress', { inputId: 'space', state: true });
-        }
-
-    }).on('keyup', function (e) {
-        if (e.key === 'w') {
-            socket.emit('keyPress', { inputId: 'up', state: false });
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', { inputId: 'down', state: false });
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', { inputId: 'left', state: false });
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', { inputId: 'right', state: false });
-        }
-        else if (e.keyCode === 32) {
-            socket.emit('keyPress', { inputId: 'space', state: false });
-        }
-    })
 
 </script>
