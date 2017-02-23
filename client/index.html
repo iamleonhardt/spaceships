@@ -103,6 +103,8 @@
             // Compare sent ships to client shipList
             var packShip = data.ships[i];
             var ship = game.shipList[packShip.id];
+            var deltaX = ship.x - packShip.x;
+            var deltaY = ship.y - packShip.y;
 
             // look for de-sync make sure player exists properly
             if (ship) {
@@ -123,11 +125,12 @@
                     // }
 
                 }
-                ship.domElem.css({
-                    left: ship.x + 'px',
-                    top: ship.y + 'px',
-                    'transform': 'rotateZ(' + ship.rotation + 'deg)'
-                });
+                // ship.domElem.css({
+                //     left: ship.x + 'px',
+                //     top: ship.y + 'px',
+                //     'transform': 'translate(' + deltaX + 'px ,' + deltaY + 'px )',
+                //     'transform': 'rotateZ(' + ship.rotation + 'deg)'
+                // });
             }
         }
 
@@ -144,10 +147,10 @@
                 var shot = game.bulletList[bulletId];
                 shot.x = packBullet.x;
                 shot.y = packBullet.y;
-                shot.domElem.css({
-                    left: shot.x + 'px',
-                    top: shot.y + 'px'
-                })
+                // shot.domElem.css({
+                //     left: shot.x + 'px',
+                //     top: shot.y + 'px'
+                // })
             }
         }
     });
@@ -189,6 +192,14 @@
                 top: ship.y + 'px',
                 transform: 'rotateZ(' + ship.rotation + 'deg)'
             });
+        }
+
+        for (var i in game.bulletList){
+            var shot = game.bulletList[i];
+            shot.domElem.css({
+                    left: shot.x + 'px',
+                    top: shot.y + 'px'
+                })
         }
 
     }, 40);
