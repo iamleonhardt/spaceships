@@ -99,8 +99,8 @@
             // Compare sent ships to client shipList
             var packShip = data.ships[i];
             var ship = game.shipList[packShip.id];
-            var deltaX = ship.x - packShip.x;
-            var deltaY = ship.y - packShip.y;
+            // var deltaX = ship.x - packShip.x;
+            // var deltaY = ship.y - packShip.y;
 
             // look for de-sync make sure player exists properly
             if (ship) {
@@ -151,12 +151,14 @@
             delete game.shipList[data.ships[i]];
             console.log('after delete game.shiplist is : ', game.shipList);
         }
-        // console.log(data.bullets)
-        // for (var i in data.bullets) {
-        //     game.bulletList[data.bullets[i]].bulletDie();
-        //     delete game.bulletList[data.bullets[i]];
-        //     console.log('removing bullet: ', game.bulletList);
-        // }
+        
+        for (var i in data.bullets) {
+            console.log(data.bullets)
+            console.log(game.bulletList[data.bullets[i].toString()]);
+            game.bulletList[data.bullets[i].toString()].bulletDie();
+            delete game.bulletList[data.bullets[i]];
+            console.log('removing bullet: ', game.bulletList);
+        }
     });
 
     socket.emit('askForId', function () {

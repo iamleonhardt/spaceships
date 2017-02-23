@@ -74,6 +74,7 @@ function Bullet(angle, x, y, parent) {
                 self.y < ship.y + ship.height &&
                 self.parent !== ship.id) {
                     self.toRemove = true;
+                    // removePack.bullets.push(ship.id);
                     ship.health -= 5;
                     if (ship.health <= 0){
                         removePack.ships.push(ship.id);
@@ -107,7 +108,7 @@ Bullet.update = function () {
         var shot = bulletList[i];
         shot.update();
         if (shot.toRemove) {
-            // removePack.bullets.push(shot.id);
+            removePack.bullets.push(shot.id);
             delete shot;
         } else {
             updatePack.push(shot.getUpdatePack());
@@ -356,5 +357,6 @@ setInterval(function () {
 
     initPack.ships = [];
     removePack.ships = [];
+    removePack.bullets = [];
 
 }, 40);

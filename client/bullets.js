@@ -30,10 +30,10 @@ function Bullet(data) {
     }
 
     //self death built into the bullet
-    setTimeout(function () {
-        delete game.bulletList[self.id];
-        self.bulletDie();
-    }, 1000)
+    // setTimeout(function () {
+    //     delete game.bulletList[self.id];
+    //     self.bulletDie();
+    // }, 1000)
 
     this.get_radians = function (degrees) {
         return (Math.PI / 180) * degrees;
