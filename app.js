@@ -75,6 +75,9 @@ function Bullet(angle, x, y, parent) {
                 self.parent !== ship.id) {
                     self.toRemove = true;
                     ship.health -= 5;
+                    if (ship.health <= 0){
+                        removePack.ships.push(ship.id);
+                    }
                     // console.log(ship.health);
             }
         }
