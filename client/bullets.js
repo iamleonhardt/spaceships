@@ -14,7 +14,7 @@ function Bullet(data) {
             css: {
                 left: self.x,
                 top: self.y,
-                'transition-duration': 0.1 + 's',
+                'transition-duration': 20 + 'ms',
                 height: 1 + 'px',
                 width: 1 + 'px'
 

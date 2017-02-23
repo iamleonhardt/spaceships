@@ -3,7 +3,7 @@ body {
     margin: 0;
     font-size: 0;
     font-family: roboto, arial, sans-serif;
-    background-image: url('images/starsBg.png');
+    background-color: black;
 
 }
 
@@ -122,6 +122,7 @@ body {
     width: 100vw;
     height: 100vh;
     /*background-color: #141421;*/
+    background-image: url('images/starsBg.png');
     position: relative;
     z-index: -1;
 }
@@ -134,6 +135,15 @@ body {
     /*border-style: solid;*/
     /*border-width: 0 12.5px 25px 12.5px;*/
     /*border-color: transparent transparent #007bff transparent;*/
+}
+
+#pilotName {
+    font-size:10px;
+    color:white;
+    text-align: center;
+    position: relative;
+    top: 36px;
+
 }
 
 /*Green Ships*/
@@ -228,3 +238,4 @@ body {
     position: absolute;
     display:inline-block;
     border:2px solid red;
+}

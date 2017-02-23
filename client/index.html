@@ -41,6 +41,12 @@
 
     $(document).ready(function () {
         game.init('#gameArea');
+        $(document).keypress(function(e) {
+            console.log('e is : ', e);
+            if (e.which == 13) {
+                game.joinTheFightBtn();
+            }
+        })
     });
 
     function getRanNum(min, max) {
@@ -109,6 +115,14 @@
                 if (packShip.rotation !== undefined) {
                     ship.rotation = packShip.rotation;
                 }
+                //
+                if (packShip.health !== undefined) {
+                    ship.health = packShip.health
+                    if (packShip.health <= 0) {
+                        ship.shipDie();
+                    }
+
+                }
                 ship.domElem.css({
                     left: ship.x + 'px',
                     top: ship.y + 'px',
@@ -155,8 +169,9 @@
         // }
     });
 
-    socket.emit('askForId', function(){});
-    socket.on('answerForId', function(data){
+    socket.emit('askForId', function () {
+    });
+    socket.on('answerForId', function (data) {
         console.log(data.id)
         selfId = data.id;
     })
@@ -178,47 +193,6 @@
 
     }, 40);
 
-    setInterval(function(){
-        window.scrollTo(game.shipList[selfId].x-400, game.shipList[selfId].y-400);
-    }, 5);
-
     game = new GameController(socket);
-
-    //rewritten movement controls are more fluid
-    $('body').on('keypress', function (e) {
-        // console.log(e.keyCode)
-        if (e.key === 'w') {
-            socket.emit('keyPress', {inputId: 'up', state: true});
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', {inputId: 'down', state: true});
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', {inputId: 'left', state: true});
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', {inputId: 'right', state: true});
-        }
-        else if (e.keyCode === 32) {
-            socket.emit('keyPress', {inputId: 'space', state: true});
-        }
-
-    }).on('keyup', function (e) {
-        if (e.key === 'w') {
-            socket.emit('keyPress', {inputId: 'up', state: false});
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', {inputId: 'down', state: false});
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', {inputId: 'left', state: false});
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', {inputId: 'right', state: false});
-        }
-        else if (e.keyCode === 32) {
-            socket.emit('keyPress', {inputId: 'space', state: false});
-        }
-    })
 
 </script>
