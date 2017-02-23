@@ -79,11 +79,7 @@
                     if (objKeys.includes(initPack.ships[i].id.toString())) {
                         shipExists = true;
                     }
-                    // for (var j in objKeys) {
-                    // if (initPack.ships[i].id == objKeys[j]) {
-                    // shipExists = true;
-                    // }
-                    // }
+            
                     if (!shipExists) {
                         console.log('no matches found, lets build a ship');
                         game.makeShip(initPack.ships[i]);
@@ -125,12 +121,7 @@
                     // }
 
                 }
-                // ship.domElem.css({
-                //     left: ship.x + 'px',
-                //     top: ship.y + 'px',
-                //     'transform': 'translate(' + deltaX + 'px ,' + deltaY + 'px )',
-                //     'transform': 'rotateZ(' + ship.rotation + 'deg)'
-                // });
+                
             }
         }
 
@@ -147,10 +138,6 @@
                 var shot = game.bulletList[bulletId];
                 shot.x = packBullet.x;
                 shot.y = packBullet.y;
-                // shot.domElem.css({
-                //     left: shot.x + 'px',
-                //     top: shot.y + 'px'
-                // })
             }
         }
     });
@@ -182,26 +169,9 @@
 
     setInterval(function () {
         //console.log('shipList is : ', game.shipList);
-        for (var i in game.shipList) {
-
-            // update position
-            var ship = game.shipList[i];
-            //    console.log('ship is : ', ship);
-            ship.domElem.css({
-                left: ship.x + 'px',
-                top: ship.y + 'px',
-                transform: 'rotateZ(' + ship.rotation + 'deg)'
-            });
-        }
-
-        for (var i in game.bulletList){
-            var shot = game.bulletList[i];
-            shot.domElem.css({
-                    left: shot.x + 'px',
-                    top: shot.y + 'px'
-                })
-        }
-
+        game.shipUpdate();
+        game.bulletUpdate();
+    
     }, 40);
 
     game = new GameController(socket);
