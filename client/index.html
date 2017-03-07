@@ -1,23 +1,56 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <link rel="stylesheet" href="style.css">
-
+<script src='bullets.js'></script>
 <script src="ship.js"></script>
 <script src="game.js"></script>
 <!-- dan game map code -->
 <script src="map/map.js"></script>
 <!-- end dan game map code -->
+
+<!-- Choose Team Section -->
+<div id="chooseTeamDiv">
+    <div id="teamSelectSection" class="chooseTeamSections">
+        <div class="teamBtn" id="Red">Red Team</div>
+        <div class="teamBtn" id="Green">Green Team</div>
+        <div class="teamBtn" id="Gold">Gold Team</div>
+    </div>
+    <div id="shipSelectSection" class="chooseTeamSections">
+        <div class="shipChoice" id="shipChoice1"></div>
+        <div class="shipChoice" id="shipChoice2"></div>
+        <div class="shipChoice" id="shipChoice3"></div>
+        <div class="shipChoice" id="shipChoice4"></div>
+        <div class="shipChoice" id="shipChoice5"></div>
+        <div class="shipChoice" id="shipChoice6"></div>
+        <div class="shipChoice" id="shipChoice7"></div>
+    </div>
+    <div id="menuInstructions">Select a Team</div>
+    <div id="nameAndJoinSection" class="chooseTeamSections">
+        <input id='pilotNameInput' type="text" placeholder="Enter Pilot's Name">
+        <div id="joinBtn">Join the Fight!</div>
+    </div>
+
+</div>
+
+<!-- Game Section -->
 <div id="gameArea"></div>
 
 <script>
     var game;
+    var selfId;
 
     $(document).ready(function () {
         game.init('#gameArea');
+        $(document).keypress(function(e) {
+            console.log('e is : ', e);
+            if (e.which == 13) {
+                game.joinTheFightBtn();
+            }
+        })
     });
 
     function getRanNum(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min)
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     var socket = io();
@@ -25,38 +58,45 @@
     // Init - When new stuff created, contains all the data
 
     socket.on('init', function (initPack) {
-        var shipExists = false;
+            var shipExists = false;
 
-        // Check if shipList is empty, if so fill it with ships
-        if ($.isEmptyObject(game.shipList)) {
-            for (var i in initPack.ships) {
-                console.log('putting together new ship');
-                game.makeShip(initPack.ships[i]);
-            }
-            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
-        }
-        else {
-            var objKeys = Object.keys(game.shipList);
-            for (var i in initPack.ships) {
-                for (var j in objKeys) {
-                    if (initPack.ships[i].id == objKeys[j]) {
-                        shipExists = true;
-                    }
-                }
-                if (!shipExists) {
-                    console.log('no matches found, lets build a ship');
+            // Check if shipList is empty, if so fill it with ships
+            if ($.isEmptyObject(game.shipList)) {
+                for (var i in initPack.ships) {
+                    console.log('putting together new ship');
                     game.makeShip(initPack.ships[i]);
                 }
-                shipExists = false;
+                // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+            }
+
+            // If the shipList isn't empty compare ids with initPack and only add ships that arent in there
+
+            else {
+                var objKeys = Object.keys(game.shipList);
+                // console.log(objKeys.includes(initPack.ships[i].id.toString()));
+
+                for (var i in initPack.ships) {
+                    if (objKeys.includes(initPack.ships[i].id.toString())) {
+                        shipExists = true;
+                    }
+                    // for (var j in objKeys) {
+                    // if (initPack.ships[i].id == objKeys[j]) {
+                    // shipExists = true;
+                    // }
+                    // }
+                    if (!shipExists) {
+                        console.log('no matches found, lets build a ship');
+                        game.makeShip(initPack.ships[i]);
+                    }
+                    shipExists = false;
+                }
             }
         }
-    }
     )
 
     // Update - Contains the difference when things change
     socket.on('update', function (data) {
-        //        console.log('update triggered and data is : ', data);
-
+        // console.log('update triggered and data is : ', data);
         // Server updatePack = { ships: [{id:123, pilotName: 'Dan', x:43, y:52},{id:221, pilotName: 'Stan', x:3, y:2}], bullets: []}
         for (var i in data.ships) {
 
@@ -75,6 +115,14 @@
                 if (packShip.rotation !== undefined) {
                     ship.rotation = packShip.rotation;
                 }
+                //
+                if (packShip.health !== undefined) {
+                    ship.health = packShip.health
+                    if (packShip.health <= 0) {
+                        ship.shipDie();
+                    }
+
+                }
                 ship.domElem.css({
                     left: ship.x + 'px',
                     top: ship.y + 'px',
@@ -82,10 +130,29 @@
                 });
             }
         }
+
+        //for each bullet in the datapack, if its not in the bulletlist, create the bullet, else update the position
+        for (var i in data.bullets) {
+            var packBullet = data.bullets[i];
+            var bulletId = packBullet.id.toString();
+            var shotList = Object.keys(game.bulletList);
+
+            if (!shotList.includes(bulletId)) {
+                game.createBullet(packBullet)
+
+            } else {
+                var shot = game.bulletList[bulletId];
+                shot.x = packBullet.x;
+                shot.y = packBullet.y;
+                shot.domElem.css({
+                    left: shot.x + 'px',
+                    top: shot.y + 'px'
+                })
+            }
+        }
     });
 
     // Remove - When things are removed
-
     socket.on('remove', function (data) {
         // console.log('remove data is ', data);
         // Server will send list of ids to remove, and we loop through and remove them.
@@ -93,56 +160,39 @@
             game.shipList[data.ships[i]].shipDie();
             delete game.shipList[data.ships[i]];
             console.log('after delete game.shiplist is : ', game.shipList);
-
         }
+        // console.log(data.bullets)
+        // for (var i in data.bullets) {
+        //     game.bulletList[data.bullets[i]].bulletDie();
+        //     delete game.bulletList[data.bullets[i]];
+        //     console.log('removing bullet: ', game.bulletList);
+        // }
     });
+
+    socket.emit('askForId', function () {
+    });
+    socket.on('answerForId', function (data) {
+        console.log(data.id)
+        selfId = data.id;
+    })
 
 
     setInterval(function () {
-        //    console.log('shipList is : ', game.shipList);
+        //console.log('shipList is : ', game.shipList);
         for (var i in game.shipList) {
+
             // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
             ship.domElem.css({
                 left: ship.x + 'px',
                 top: ship.y + 'px',
-                'transform': 'rotateZ(' + ship.rotation + 'deg)'
+                transform: 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
+
     }, 40);
 
     game = new GameController(socket);
-
-    //rewritten movement controls are more fluid
-    $('body').on('keypress', function (e) {
-        if (e.key === 'w') {
-            socket.emit('keyPress', { inputId: 'up', state: true });
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', { inputId: 'down', state: true });
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', { inputId: 'left', state: true });
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', { inputId: 'right', state: true });
-        }
-        
-    }).on('keyup', function (e) {
-        if (e.key === 'w') {
-            socket.emit('keyPress', { inputId: 'up', state: false });
-        }
-        else if (e.key === 's') {
-            socket.emit('keyPress', { inputId: 'down', state: false });
-        }
-        else if (e.key === 'a') {
-            socket.emit('keyPress', { inputId: 'left', state: false });
-        }
-        else if (e.key === 'd') {
-            socket.emit('keyPress', { inputId: 'right', state: false });
-        }
-    
-    })
 
 </script>

@@ -2,10 +2,16 @@ function Ship(initPack) {
     var self = this;
     this.id = initPack.id;
     this.pilotName = initPack.pilotName;
-
+    this.bullets = initPack.bullets;
+    this.health = 50;
     this.width = 30;
     this.height = 30;
-    this.shipSprite = 'shipR' + getRanNum(1,7);
+    // this.shipSprite = 'shipRed' + getRanNum(1,7);
+    this.team = initPack.team;
+    this.shipSprite = initPack.ship;
+    console.log('selected ship is : ', initPack);
+
+
     this.domElem = null;
 
 
@@ -24,13 +30,18 @@ function Ship(initPack) {
             css: {
                 left: self.x,
                 top: self.y,
-                'transition-duration': 0.1 + 's',
+                'transition-duration': 20 + 'ms',
                 // 'background-color': initPack.shipColor,
                 // width: self.width + 'px',
                 // height: self.height + 'px',
-                text: this.pilotName
             }
         });
+        var nameDiv = $('<div>', {
+                id: 'pilotName',
+                text: this.pilotName
+            }
+        );
+        this.domElem.append(nameDiv);
         return this.domElem;
     };
 
