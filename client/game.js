@@ -156,9 +156,10 @@ function GameController(socket) {
             // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
+            TweenMax.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px'});
             ship.domElem.css({
-                left: ship.x + 'px',
-                top: ship.y + 'px',
+                // left: ship.x + 'px',
+                // top: ship.y + 'px',
                 transform: 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
@@ -167,10 +168,11 @@ function GameController(socket) {
     this.bulletUpdate = function () {
         for (var i in game.bulletList) {
             var shot = game.bulletList[i];
-            shot.domElem.css({
-                left: shot.x + 'px',
-                top: shot.y + 'px'
-            })
+            TweenMax.to(shot.domElem, 0.1, {left: shot.x + 'px', top: shot.y + 'px'});
+            // shot.domElem.css({
+            //     left: shot.x + 'px',
+            //     top: shot.y + 'px'
+            // })
         }
     }
 
