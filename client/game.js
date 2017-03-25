@@ -156,11 +156,11 @@ function GameController(socket) {
             // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
-            TweenMax.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px'});
+            TweenMax.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});
             ship.domElem.css({
                 // left: ship.x + 'px',
                 // top: ship.y + 'px',
-                transform: 'rotateZ(' + ship.rotation + 'deg)'
+                // transform: 'rotateZ(' + ship.rotation + 'deg)'
             });
         }
     }
