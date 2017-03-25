@@ -75,8 +75,8 @@ function GameController(socket) {
 
             //used to follow the players ship around
             setInterval(function () {
-                window.scrollTo(game.shipList[selfId].x - 400, game.shipList[selfId].y - 400);
-            }, 5);
+                window.scrollTo({left:game.shipList[selfId].x - 400, top:game.shipList[selfId].y - 400, behavior:'smooth'});
+            }, 50);
         }
     };
 
