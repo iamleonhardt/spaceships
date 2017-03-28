@@ -75,7 +75,8 @@ function GameController(socket) {
 
             //used to follow the players ship around
             setInterval(function () {
-                window.scrollTo(game.shipList[selfId].x - 400, game.shipList[selfId].y - 400);
+                TweenLite.to(window, 2, {scrollTo:{y:game.shipList[selfId].y - 400, x:game.shipList[selfId].x - 400}});
+                // window.scrollTo(game.shipList[selfId].x - 400, game.shipList[selfId].y - 400);
             }, 5);
         }
     };
