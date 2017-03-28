@@ -37,9 +37,9 @@ function Ship(initPack) {
             }
         });
         var nameDiv = $('<div>', {
-                id: 'pilotName',
-                text: this.pilotName
-            }
+            id: 'pilotName',
+            text: this.pilotName
+        }
         );
         this.domElem.append(nameDiv);
         return this.domElem;

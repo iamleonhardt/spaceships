@@ -75,7 +75,7 @@ function GameController(socket) {
 
             //used to follow the players ship around
             setInterval(function () {
-                TweenLite.to(window, 2, {scrollTo:{y:game.shipList[selfId].y - 400, x:game.shipList[selfId].x - 400}});
+                TweenLite.to(window, 2, { scrollTo: { y: game.shipList[selfId].y - 400, x: game.shipList[selfId].x - 400 } });
                 // window.scrollTo(game.shipList[selfId].x - 400, game.shipList[selfId].y - 400);
             }, 5);
         }
@@ -109,49 +109,47 @@ function GameController(socket) {
         this.gameArea.append(mapElement);
     };
 
-
-    this.handleKeypress = function(e) {
+    this.handleKeypress = function (e) {
         console.log('keypress, e is : ', e.which);
         switch (e.which) {
             case 87: // w
-                socket.emit('keyPress', {inputId: 'up', state: true});
+                socket.emit('keyPress', { inputId: 'up', state: true });
                 break;
             case 65: // a
-                socket.emit('keyPress', {inputId: 'left', state: true});
+                socket.emit('keyPress', { inputId: 'left', state: true });
                 break;
             case 83: // s
-                socket.emit('keyPress', {inputId: 'down', state: true});
+                socket.emit('keyPress', { inputId: 'down', state: true });
                 break;
             case 68:  // d
-                socket.emit('keyPress', {inputId: 'right', state: true});
+                socket.emit('keyPress', { inputId: 'right', state: true });
                 break;
             case 32:  // spacebar
-                socket.emit('keyPress', {inputId: 'space', state: true});
+                socket.emit('keyPress', { inputId: 'space', state: true });
         }
     }
 
-
-    this.handleKeyup = function(e) {
+    this.handleKeyup = function (e) {
         console.log('keyup, e is : ', e.which);
         switch (e.which) {
             case 87: // w
-                socket.emit('keyPress', {inputId: 'up', state: false});
+                socket.emit('keyPress', { inputId: 'up', state: false });
                 break;
             case 65: // a
-                socket.emit('keyPress', {inputId: 'left', state: false});
+                socket.emit('keyPress', { inputId: 'left', state: false });
                 break;
             case 83: // s
-                socket.emit('keyPress', {inputId: 'down', state: false});
+                socket.emit('keyPress', { inputId: 'down', state: false });
                 break;
             case 68:  // d
-                socket.emit('keyPress', {inputId: 'right', state: false});
+                socket.emit('keyPress', { inputId: 'right', state: false });
                 break;
             case 32:  // spacebar
-                socket.emit('keyPress', {inputId: 'space', state: false});
+                socket.emit('keyPress', { inputId: 'space', state: false });
         }
     }
 
-    this.addEventHandlers = function(){
+    this.addEventHandlers = function () {
         $(document).keydown(game.handleKeypress);
         $(document).keyup(game.handleKeyup);
     }

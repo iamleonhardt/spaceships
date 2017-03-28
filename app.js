@@ -73,9 +73,9 @@ function Bullet(angle, x, y, parent) {
                 self.y > ship.y &&
                 self.y < ship.y + ship.height &&
                 self.parent !== ship.id) {
-                    self.toRemove = true;
-                    ship.health -= 5;
-                    // console.log(ship.health);
+                self.toRemove = true;
+                ship.health -= 5;
+                // console.log(ship.health);
             }
         }
     }
@@ -201,7 +201,7 @@ function Ship(data, socket) {
             bulletList[b.id] = b;
             self.canShoot = false;
             self.bullets--;
-            setTimeout(function(){self.canShoot = true}, 500);
+            setTimeout(function () { self.canShoot = true }, 500);
         }
     }
     //this needs a touch up

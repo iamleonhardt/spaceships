@@ -77,16 +77,10 @@
             else {
                 var objKeys = Object.keys(game.shipList);
                 // console.log(objKeys.includes(initPack.ships[i].id.toString()));
-
                 for (var i in initPack.ships) {
                     if (objKeys.includes(initPack.ships[i].id.toString())) {
                         shipExists = true;
                     }
-                    // for (var j in objKeys) {
-                    // if (initPack.ships[i].id == objKeys[j]) {
-                    // shipExists = true;
-                    // }
-                    // }
                     if (!shipExists) {
                         console.log('no matches found, lets build a ship');
                         game.makeShip(initPack.ships[i]);
@@ -118,20 +112,13 @@
                 if (packShip.rotation !== undefined) {
                     ship.rotation = packShip.rotation;
                 }
-                //
                 if (packShip.health !== undefined) {
                     ship.health = packShip.health
                     if (packShip.health <= 0) {
                         ship.shipDie();
                     }
-
                 }
-                TweenLite.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});
-                // ship.domElem.css({
-                //     left: ship.x + 'px',
-                //     top: ship.y + 'px',
-                //     'transform': 'rotateZ(' + ship.rotation + 'deg)'
-                // });
+                TweenLite.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});     
             }
         }
 
@@ -148,11 +135,7 @@
                 var shot = game.bulletList[bulletId];
                 shot.x = packBullet.x;
                 shot.y = packBullet.y;
-                TweenLite.to(shot.domElem, 0.1, {left: shot.x + 'px', top: shot.y});
-                // shot.domElem.css({
-                //     left: shot.x + 'px',
-                //     top: shot.y + 'px'
-                // })
+                TweenLite.to(shot.domElem, 0.1, {left: shot.x + 'px', top: shot.y});          
             }
         }
     });
@@ -165,13 +148,7 @@
             game.shipList[data.ships[i]].shipDie();
             delete game.shipList[data.ships[i]];
             console.log('after delete game.shiplist is : ', game.shipList);
-        }
-        // console.log(data.bullets)
-        // for (var i in data.bullets) {
-        //     game.bulletList[data.bullets[i]].bulletDie();
-        //     delete game.bulletList[data.bullets[i]];
-        //     console.log('removing bullet: ', game.bulletList);
-        // }
+        }  
     });
 
     socket.emit('askForId', function () {
@@ -185,16 +162,10 @@
     setInterval(function () {
         //console.log('shipList is : ', game.shipList);
         for (var i in game.shipList) {
-
             // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
             TweenLite.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});
-            // ship.domElem.css({
-            //     left: ship.x + 'px',
-            //     top: ship.y + 'px',
-            //     transform: 'rotateZ(' + ship.rotation + 'deg)'
-            // });
         }
 
     }, 40);

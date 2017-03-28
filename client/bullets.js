@@ -6,7 +6,6 @@ function Bullet(data) {
     this.x = data.x;
     this.y = data.y;
 
-
     this.createDomElem = function () {
         this.domElem = $('<div>', {
             id: self.id,
