@@ -126,11 +126,12 @@
                     }
 
                 }
-                ship.domElem.css({
-                    left: ship.x + 'px',
-                    top: ship.y + 'px',
-                    'transform': 'rotateZ(' + ship.rotation + 'deg)'
-                });
+                TweenLite.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});
+                // ship.domElem.css({
+                //     left: ship.x + 'px',
+                //     top: ship.y + 'px',
+                //     'transform': 'rotateZ(' + ship.rotation + 'deg)'
+                // });
             }
         }
 
@@ -147,10 +148,11 @@
                 var shot = game.bulletList[bulletId];
                 shot.x = packBullet.x;
                 shot.y = packBullet.y;
-                shot.domElem.css({
-                    left: shot.x + 'px',
-                    top: shot.y + 'px'
-                })
+                TweenLite.to(shot.domElem, 0.1, {left: shot.x + 'px', top: shot.y});
+                // shot.domElem.css({
+                //     left: shot.x + 'px',
+                //     top: shot.y + 'px'
+                // })
             }
         }
     });
@@ -187,11 +189,12 @@
             // update position
             var ship = game.shipList[i];
             //    console.log('ship is : ', ship);
-            ship.domElem.css({
-                left: ship.x + 'px',
-                top: ship.y + 'px',
-                transform: 'rotateZ(' + ship.rotation + 'deg)'
-            });
+            TweenLite.to(ship.domElem, 0.1, {left: ship.x + 'px', top: ship.y + 'px', rotation:ship.rotation});
+            // ship.domElem.css({
+            //     left: ship.x + 'px',
+            //     top: ship.y + 'px',
+            //     transform: 'rotateZ(' + ship.rotation + 'deg)'
+            // });
         }
 
     }, 40);
